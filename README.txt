@@ -1,15 +1,8 @@
-LA ZONA MAXIMA — CORRECCION DE PERSISTENCIA
+LA ZONA MAXIMA — CORRECCION DE CARGA DE CANALES
 
-Corrección:
-- La lista M3U que importes se guarda en IndexedDB del navegador/PWA del iPhone.
-- Al cerrar y volver a abrir, se restaura primero la última lista importada.
-- Se añade el botón “Borrar lista guardada” para eliminarla cuando quieras.
-- Se ha cambiado la versión de caché del Service Worker para forzar la actualización.
+- Parser mejorado para listas M3U/M3U8 y TXT con URLs HTTP/HTTPS directas.
+- Si el guardado local falla, los canales se muestran de todas formas y se informa de que no se han guardado.
+- Mensajes de error más claros cuando el archivo no contiene enlaces de vídeo reconocibles.
+- Caché actualizada a v6.
 
-Publicación:
-1. Descomprime este ZIP.
-2. Sube el contenido de La_Zona_Maxima_PWA_Futbol a la raíz del repositorio GitHub Pages y reemplaza los archivos.
-3. Espera la publicación, cierra completamente la PWA y vuelve a abrirla.
-4. Importa una lista una sola vez. La próxima vez debería seguir cargada.
-
-La lista se guarda localmente en ese navegador/dispositivo. Si borras los datos del sitio o abres la PWA en otro dispositivo, tendrás que importarla allí también.
+Publicación: sube el contenido de esta carpeta a la raíz del repositorio GitHub Pages, reemplazando los archivos. Cierra y abre la PWA, y vuelve a importar la lista.

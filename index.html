@@ -104,20 +104,35 @@ function esc(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&l
 function parseM3U(text) {
   const lines = text.replace(/^\uFEFF/,"").split(/\r?\n/);
   const out=[]; let info="", group="";
+  const pending=[];
   for (const raw of lines) {
     const line=raw.trim(); if(!line) continue;
     if(line.startsWith("#EXTINF:")) { info=line; group=attr(line,"group-title"); continue; }
-    if(info && line.startsWith("#")) continue;
-    if(info && /^(https?:\/\/|rtmp:\/\/|rtsp:\/\/)/i.test(line)) {
-      const comma=info.indexOf(",");
-      const name=comma>=0 ? info.slice(comma+1).trim() : "Canal sin nombre";
-      const tvgId=attr(info,"tvg-id"), logo=attr(info,"tvg-logo");
-      out.push({name,url:line,group:group||"Otros",tvgId,logo});
+    if(line.startsWith("#")) continue;
+    if(/^(https?:\/\/|rtmp:\/\/|rtsp:\/\/)/i.test(line)) {
+      if(info) {
+        const comma=info.indexOf(",");
+        const name=comma>=0 ? info.slice(comma+1).trim() : "Canal sin nombre";
+        out.push({name:name||"Canal sin nombre",url:line,group:group||"Otros",tvgId:attr(info,"tvg-id"),logo:attr(info,"tvg-logo")});
+      } else {
+        // Plain text files may contain one stream URL per line.
+        let name=line;
+        try { const u=new URL(line); name=(u.hostname||"Canal")+" "+(u.pathname.split("/").filter(Boolean).pop()||""); } catch(e) {}
+        out.push({name:name,url:line,group:"Otros",tvgId:"",logo:""});
+      }
       info=""; group="";
-    } else if (!line.startsWith("#")) { info=""; group=""; }
+    } else {
+      // Support simple "Channel name | URL" or "Channel name,URL" text lists.
+      const m=line.match(/^(.{2,100}?)[\s|,;]+(https?:\/\/\S+)$/i);
+      if(m) out.push({name:m[1].trim(),url:m[2].trim(),group:"Otros",tvgId:"",logo:""});
+      info=""; group="";
+    }
   }
   const seen=new Set();
-  return out.filter(c=>{if(seen.has(c.url))return false;seen.add(c.url);return true;});
+  return out.filter(c=>{
+    if(seen.has(c.url))return false;
+    seen.add(c.url);return true;
+  });
 }
 function isFootball(c) {
   const text=normal([c.name,c.group,c.tvgId].join(" "));
@@ -205,20 +220,26 @@ async function deleteSavedPlaylist() {
 }
 async function loadText(text,label,{persist=false}={}) {
   const parsed=parseM3U(text);
-  if(!parsed.length) throw new Error("No se encontraron canales con URLs válidas.");
-  if(persist) {
-    await savePlaylist(text,label);
-    $("sourceStatus").textContent=`${label}: ${parsed.length.toLocaleString("es-ES")} canales cargados y guardados en este iPhone.`;
-  } else {
-    $("sourceStatus").textContent=`${label}: ${parsed.length.toLocaleString("es-ES")} canales restaurados desde este iPhone.`;
+  if(!parsed.length) {
+    throw new Error("No se detectaron enlaces de vídeo. El archivo debe contener entradas #EXTINF seguidas de URLs, o URLs http/https directas.");
   }
   allChannels=parsed;
   applyFilters();
+  if(persist) {
+    try {
+      await savePlaylist(text,label);
+      $("sourceStatus").textContent=`${label}: ${parsed.length.toLocaleString("es-ES")} canales cargados y guardados en este iPhone.`;
+    } catch(err) {
+      $("sourceStatus").textContent=`Se han cargado ${parsed.length.toLocaleString("es-ES")} canales, pero iOS no ha permitido guardarlos. No cierres la PWA todavía; vuelve a intentarlo o usa Safari en la misma dirección.`;
+    }
+  } else {
+    $("sourceStatus").textContent=`${label}: ${parsed.length.toLocaleString("es-ES")} canales restaurados desde este iPhone.`;
+  }
 }
 $("playlistFile").addEventListener("change",async e=>{
   const file=e.target.files?.[0]; if(!file)return;
   try { await loadText(await file.text(),file.name,{persist:true}); }
-  catch(err){$("sourceStatus").textContent="No se pudo cargar/guardar la lista. Comprueba el archivo y vuelve a intentarlo."; }
+  catch(err){$("sourceStatus").textContent=(err&&err.message)?err.message:"No se pudo leer el archivo. Comprueba que sea una lista M3U/M3U8 o TXT con URLs directas."; }
 });
 $("clearSaved").addEventListener("click",async()=>{
   try {
