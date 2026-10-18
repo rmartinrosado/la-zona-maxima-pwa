@@ -27,7 +27,7 @@ button{cursor:pointer;background:#134e4a;border-color:#1c7770;font-weight:650}
 .player-title{font-weight:700;margin:0 0 8px;overflow-wrap:anywhere}
 .listhead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
 .count{font-size:.8rem;color:var(--muted);white-space:nowrap}
-.channels{display:grid;gap:8px}
+.channels{display:grid;gap:8px}.player-panel{margin:4px 0 8px;order:initial}.player-panel #player{width:100%;background:#000;border-radius:12px;max-height:42vh;aspect-ratio:16/9}
 .channel{display:flex;gap:11px;align-items:center;text-align:left;background:#142136;border:1px solid var(--line);padding:10px;border-radius:12px}
 .channel img{width:42px;height:42px;object-fit:contain;background:#fff1;border-radius:8px;flex-shrink:0}
 .channel .name{font-weight:650;display:block;overflow-wrap:anywhere}
@@ -41,7 +41,7 @@ button{cursor:pointer;background:#134e4a;border-color:#1c7770;font-weight:650}
 <body>
 <header>
   <h1>📺 La Zona Máxima</h1>
-  <p>Canales por país y contenido en español</p>
+  <p>Canales IPTV · búsqueda rápida · Yoigo TV</p>
 </header>
 <main>
   <section class="panel">
@@ -49,25 +49,11 @@ button{cursor:pointer;background:#134e4a;border-color:#1c7770;font-weight:650}
     <input id="playlistFile" type="file" accept=".m3u,.m3u8,.txt,audio/x-mpegurl,application/vnd.apple.mpegurl">
     <div class="status" id="sourceStatus">Puedes cargar tu archivo local o usar la lista predeterminada si está en la misma carpeta que la PWA.</div>
     <div class="controls" style="margin-top:12px">
-      <div><label for="country">País</label><select id="country"><option value="">Todos los países</option></select></div>
-      <div><label for="language">Idioma / audiencia</label><select id="language">
-        <option value="all">Todos los idiomas</option>
-        <option value="spanish">Español / hispano (estimado)</option>
-        <option value="other">Otros / sin identificar</option>
-      </select></div>
       <div class="full"><label for="search">Buscar canal</label><input id="search" type="search" placeholder="Nombre del canal…"></div>
-      <button id="reset" class="full" type="button">Restablecer filtros</button>
+      <button id="reset" class="full" type="button">Limpiar búsqueda</button>
     </div>
   </section>
-
-  <section class="panel" id="playerPanel">
-    <p class="player-title" id="playingTitle">Selecciona un canal</p>
-    <video id="player" controls playsinline webkit-playsinline></video>
-    <p class="note">La reproducción depende del formato y de los permisos de cada emisión. Safari reproduce normalmente HLS (.m3u8); muchos flujos DASH/MPD, DRM, autenticación o HTTP pueden no funcionar en iPhone.</p>
-    <div class="status" id="playerStatus"></div>
-  </section>
-
-  <section class="panel" id="yoigoPanel">
+<section class="panel" id="yoigoPanel">
     <div class="listhead"><strong>📡 Yoigo TV</strong></div>
     <p class="note">Acceso directo al servicio oficial de Yoigo TV. Pulsa el botón e inicia sesión allí con tu usuario y contraseña. Por seguridad, no introduzcas ni guardes tus credenciales dentro de La Zona Máxima.</p>
     <div class="football-links">
@@ -79,10 +65,8 @@ button{cursor:pointer;background:#134e4a;border-color:#1c7770;font-weight:650}
 
   <section class="panel" id="footballPanel">
     <div class="listhead"><strong>⚽ Fútbol y LaLiga</strong></div>
-    <p class="note">Accesos oficiales a programación y calendario, más una lista pública de canales deportivos. Los enlaces oficiales de Movistar requieren la suscripción correspondiente. La lista pública no incluye la señal de pago de Movistar LaLiga.</p>
+    <p class="note">Accesos a calendario de LaLiga y a una lista pública de canales deportivos. La lista pública no garantiza que todos los canales estén disponibles en España ni que se reproduzcan en Safari.</p>
     <div class="football-links">
-      <a class="football-link" href="https://www.movistarplus.es/canal/m-laliga?id=mliga" target="_blank" rel="noopener noreferrer"><strong>📺 M+ LALIGA — programación oficial</strong><span>Consultar emisiones y ver el canal con una suscripción válida.</span></a>
-      <a class="football-link" href="https://www.movistarplus.es/canal/m-plus-laliga-1?id=mlig1" target="_blank" rel="noopener noreferrer"><strong>📺 M+ LALIGA 2</strong><span>Programación oficial del canal adicional.</span></a>
       <a class="football-link" href="https://www.laliga.com/laliga-easports/calendario" target="_blank" rel="noopener noreferrer"><strong>📅 Calendario oficial de LaLiga</strong><span>Jornadas, horarios, resultados y dónde ver cada partido.</span></a>
       <a class="football-link" href="https://iptv-org.github.io/iptv/categories/sports.m3u" target="_blank" rel="noopener noreferrer"><strong>🌍 Lista M3U pública de deportes</strong><span>Abrir o descargar la lista; después impórtala desde el selector de archivos superior.</span></a>
     </div>
@@ -92,95 +76,93 @@ button{cursor:pointer;background:#134e4a;border-color:#1c7770;font-weight:650}
 
   <section class="panel">
     <div class="listhead"><strong>Canales</strong><span class="count" id="count">0 canales</span></div>
-    <div id="channels" class="channels"><div class="empty">Carga una lista M3U para mostrar canales.</div></div>
+    <div id="channels" class="channels">
+      <div class="empty">Carga una lista M3U para mostrar canales.</div>
+      <section class="panel player-panel" id="playerPanel" style="display:none">
+        <p class="player-title" id="playingTitle">Selecciona un canal</p>
+        <video id="player" controls playsinline webkit-playsinline></video>
+        <p class="note">La reproducción depende del formato y de los permisos de cada emisión. Safari suele reproducir HLS (.m3u8); DASH/MPD, DRM, autenticación o algunos flujos HTTP pueden no funcionar en iPhone.</p>
+        <div class="status" id="playerStatus"></div>
+      </section>
+    </div>
     <button id="more" type="button" style="display:none;margin-top:12px">Mostrar más canales</button>
   </section>
 </main>
 <script>
 const $ = id => document.getElementById(id);
-let allChannels = [], visibleChannels = [], shown = 100, currentObjectUrl = null, footballOnly = false;
+let allChannels = [], visibleChannels = [], shown = 100, currentObjectUrl = null, footballOnly = false, selectedUrl = "";
 const normal = s => (s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
 const attr = (line, key) => {
-  const re = new RegExp('(?:^|\\\\s)' + key + '="([^"]*)"', 'i');
+  const re = new RegExp('(?:^|\\s)' + key + '="([^"]*)"', 'i');
   const m = line.match(re); return m ? m[1].trim() : "";
 };
-function guessCountry(group, name, tvgId) {
-  const g = (group||"").replace(/^[^A-Za-zÀ-ÿ]+/,"").trim();
-  const known = ["España","Spain","México","Mexico","Argentina","Colombia","Chile","Perú","Peru","Venezuela","Ecuador","Uruguay","Paraguay","Bolivia","Costa Rica","Guatemala","Honduras","El Salvador","Nicaragua","Panamá","Panama","Cuba","República Dominicana","Dominican Republic","Puerto Rico","Estados Unidos","United States","Brasil","Brazil","Portugal","Francia","France","Italia","Italy","Alemania","Germany","Reino Unido","United Kingdom","Canada","Canadá"];
-  for (const c of known) if (normal(g).includes(normal(c))) return c;
-  const id = (tvgId||"").toLowerCase();
-  const suffix = id.match(/\.([a-z]{2})$/);
-  const codes = {es:"España",mx:"México",ar:"Argentina",co:"Colombia",cl:"Chile",pe:"Perú",ve:"Venezuela",ec:"Ecuador",uy:"Uruguay",py:"Paraguay",bo:"Bolivia",cr:"Costa Rica",gt:"Guatemala",hn:"Honduras",sv:"El Salvador",ni:"Nicaragua",pa:"Panamá",cu:"Cuba",do:"República Dominicana",pr:"Puerto Rico",us:"Estados Unidos",br:"Brasil",pt:"Portugal",fr:"Francia",it:"Italia",de:"Alemania",gb:"Reino Unido",ca:"Canadá"};
-  if (suffix && codes[suffix[1]]) return codes[suffix[1]];
-  // group-title often uses country flags/names, but avoid claiming a country if unknown
-  return g || "País sin identificar";
-}
-function isSpanish(entry) {
-  const hay = normal([entry.name,entry.group,entry.tvgId,entry.country].join(" "));
-  // This is a heuristic based on metadata and naming, not actual audio-track inspection.
-  const labels = ["espanol","español","spanish","castellano","latino","latina","hispano","hispanic","mex","mexico","argentina","colombia","chile","peru","venezuela","ecuador","uruguay","paraguay","bolivia","costa rica","guatemala","honduras","el salvador","nicaragua","panama","cuba","dominicana","puerto rico","espana","spain","iberia"];
-  if (labels.some(x=>hay.includes(normal(x)))) return true;
-  if (/\.(es|mx|ar|co|cl|pe|ve|ec|uy|py|bo|cr|gt|hn|sv|ni|pa|cu|do|pr)(@[^.]*)?$/i.test(entry.tvgId||"")) return true;
-  return false;
-}
+function esc(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function parseM3U(text) {
   const lines = text.replace(/^\uFEFF/,"").split(/\r?\n/);
-  const out=[]; let info="", extras=[], group="";
+  const out=[]; let info="", group="";
   for (const raw of lines) {
     const line=raw.trim(); if(!line) continue;
-    if(line.startsWith("#EXTINF:")) { info=line; extras=[]; group=attr(line,"group-title"); continue; }
-    if(info && line.startsWith("#")) { extras.push(line); continue; }
+    if(line.startsWith("#EXTINF:")) { info=line; group=attr(line,"group-title"); continue; }
+    if(info && line.startsWith("#")) continue;
     if(info && /^(https?:\/\/|rtmp:\/\/|rtsp:\/\/)/i.test(line)) {
       const comma=info.indexOf(",");
       const name=comma>=0 ? info.slice(comma+1).trim() : "Canal sin nombre";
       const tvgId=attr(info,"tvg-id"), logo=attr(info,"tvg-logo");
-      const country=guessCountry(group,name,tvgId);
-      const item={name, url:line, group, tvgId, logo, country, extras, spanish:false};
-      item.spanish=isSpanish(item);
-      out.push(item); info=""; extras=[]; group="";
-    } else if (!line.startsWith("#")) { info=""; extras=[]; group=""; }
+      out.push({name,url:line,group:group||"Otros",tvgId,logo});
+      info=""; group="";
+    } else if (!line.startsWith("#")) { info=""; group=""; }
   }
-  // URL duplicates removed; keep first metadata record.
   const seen=new Set();
   return out.filter(c=>{if(seen.has(c.url))return false;seen.add(c.url);return true;});
 }
-function renderCountries() {
-  const current=$("country").value;
-  const countries=[...new Set(allChannels.map(c=>c.country))].sort((a,b)=>a.localeCompare(b,"es"));
-  $("country").innerHTML='<option value="">Todos los países</option>'+countries.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join("");
-  if(countries.includes(current)) $("country").value=current;
-}
-function esc(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function isFootball(c) {
   const text=normal([c.name,c.group,c.tvgId].join(" "));
-  return /\b(futbol|football|soccer|laliga|la liga|liga|champions|uefa|europa league|premier league|copa del rey|mundial|world cup|fifa|real madrid|barcelona|atletico|atletico madrid|betis|sevilla|valencia|athletic|osasuna|celta|rayo|espanyol|elche|villarreal|getafe|malaga|deportivo|racing|levante|real sociedad|teledeporte)\b/.test(text);
+  return /\b(futbol|football|soccer|laliga|la liga|liga|champions|uefa|europa league|premier league|copa del rey|mundial|world cup|fifa|real madrid|barcelona|atletico|betis|sevilla|valencia|athletic|osasuna|celta|rayo|espanyol|elche|villarreal|getafe|malaga|deportivo|racing|levante|real sociedad|teledeporte)\b/.test(text);
 }
 function applyFilters() {
-  const country=$("country").value, lang=$("language").value, q=normal($("search").value);
-  visibleChannels=allChannels.filter(c=>(!footballOnly||isFootball(c))&&(!country||c.country===country)&&(lang==="all"||(lang==="spanish"?c.spanish:!c.spanish))&&(!q||normal(c.name+" "+c.group+" "+c.tvgId+" "+c.country).includes(q)));
-  visibleChannels.sort((a,b)=>a.country.localeCompare(b.country,"es")||a.name.localeCompare(b.name,"es"));
+  const q=normal($("search").value);
+  visibleChannels=allChannels.filter(c=>(!footballOnly||isFootball(c))&&(!q||normal(c.name+" "+c.group+" "+c.tvgId).includes(q)));
+  visibleChannels.sort((a,b)=>a.group.localeCompare(b.group,"es")||a.name.localeCompare(b.name,"es"));
   shown=100; renderChannels();
 }
 function renderChannels() {
+  const container=$("channels"), panel=$("playerPanel");
   const slice=visibleChannels.slice(0,shown);
   $("count").textContent=`${visibleChannels.length.toLocaleString("es-ES")} canales`;
-  $("channels").innerHTML=slice.length?slice.map((c,i)=>`<button class="channel" type="button" data-index="${i}">${c.logo?`<img loading="lazy" src="${esc(c.logo)}" alt="" onerror="this.style.display='none'">`:""}<span><span class="name">${esc(c.name)}</span><span class="meta">${esc(c.country)} · ${c.spanish?"Español/hispano estimado":"Idioma no confirmado"}</span></span></button>`).join(""):'<div class="empty">No hay canales con esos filtros.</div>';
+  // Detach the player panel before rebuilding channel rows so playback is not destroyed.
+  panel.remove();
+  container.innerHTML=slice.length?slice.map((c,i)=>`<button class="channel" type="button" data-index="${i}">${c.logo?`<img loading="lazy" src="${esc(c.logo)}" alt="" onerror="this.style.display='none'">`:""}<span><span class="name">${esc(c.name)}</span><span class="meta">${esc(c.group||"Otros")}</span></span></button>`).join(""):'<div class="empty">No hay canales con esta búsqueda.</div>';
   $("more").style.display=visibleChannels.length>shown?"block":"none";
-  $("channels").querySelectorAll("button[data-index]").forEach(btn=>btn.addEventListener("click",()=>play(visibleChannels[Number(btn.dataset.index)])));
+  container.querySelectorAll("button[data-index]").forEach(btn=>btn.addEventListener("click",()=>{
+    const channel=visibleChannels[Number(btn.dataset.index)];
+    play(channel);
+    btn.after(panel);
+    panel.style.display="block";
+    panel.scrollIntoView({behavior:"smooth",block:"nearest"});
+  }));
+  // If the current channel is still visible, keep the player immediately under its row.
+  const currentIndex=slice.findIndex(c=>c.url===selectedUrl);
+  if(selectedUrl && currentIndex>=0) {
+    const row=container.querySelector(`button[data-index="${currentIndex}"]`);
+    if(row) { row.after(panel); panel.style.display="block"; }
+  } else {
+    container.append(panel);
+    panel.style.display=selectedUrl ? "block" : "none";
+  }
 }
 function play(c) {
+  selectedUrl=c.url;
   $("playingTitle").textContent=c.name;
-  $("playerStatus").textContent="Intentando reproducir: "+c.url;
+  $("playerStatus").textContent="Intentando reproducir la emisión seleccionada.";
   const video=$("player");
   video.pause(); video.removeAttribute("src"); video.load();
-  // Safari can play HLS natively; DASH/MPD and DRM usually require a different player and may not work.
   video.src=c.url; video.load();
   const p=video.play();
   if(p && p.catch) p.catch(()=>{$("playerStatus").textContent="No se pudo iniciar automáticamente. Pulsa reproducir o prueba otra emisión compatible con Safari.";});
 }
 async function loadText(text,label) {
   allChannels=parseM3U(text);
-  renderCountries(); $("sourceStatus").textContent=`${label}: ${allChannels.length.toLocaleString("es-ES")} canales cargados.`;
+  $("sourceStatus").textContent=`${label}: ${allChannels.length.toLocaleString("es-ES")} canales cargados.`;
   applyFilters();
 }
 $("playlistFile").addEventListener("change",async e=>{
@@ -188,11 +170,10 @@ $("playlistFile").addEventListener("change",async e=>{
   try { await loadText(await file.text(),file.name); }
   catch(err){$("sourceStatus").textContent="No se pudo leer el archivo. Comprueba que sea una lista M3U/M3U8."; }
 });
-["country","language"].forEach(id=>$(id).addEventListener("change",applyFilters));
 $("search").addEventListener("input",applyFilters);
-$("reset").addEventListener("click",()=>{$("country").value="";$("language").value="all";$("search").value="";applyFilters();});
-$("footballOnly").addEventListener("click",()=>{footballOnly=true;$("footballStatus").textContent="Filtro de fútbol activado sobre la lista cargada. Los resultados dependen de los nombres y metadatos de cada canal.";applyFilters();document.getElementById("channels").scrollIntoView({behavior:"smooth",block:"start"});});
-$("allChannels").addEventListener("click",()=>{footballOnly=false;$("footballStatus").textContent="Mostrando todos los canales según los filtros elegidos arriba.";applyFilters();document.getElementById("channels").scrollIntoView({behavior:"smooth",block:"start"});});
+$("reset").addEventListener("click",()=>{$("search").value="";applyFilters();});
+$("footballOnly").addEventListener("click",()=>{footballOnly=true;$("footballStatus").textContent="Filtro de fútbol activado sobre la lista cargada.";applyFilters();$("channels").scrollIntoView({behavior:"smooth",block:"start"});});
+$("allChannels").addEventListener("click",()=>{footballOnly=false;$("footballStatus").textContent="Mostrando todos los canales.";applyFilters();$("channels").scrollIntoView({behavior:"smooth",block:"start"});});
 $("more").addEventListener("click",()=>{shown+=100;renderChannels();});
 (async()=>{
   if("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js").catch(()=>{});
