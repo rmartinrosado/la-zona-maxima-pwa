@@ -1,14 +1,17 @@
-# LA ZONA MÁXIMA — PWA independiente
+# La Zona Máxima PWA (actualizada)
 
 ## Publicar en GitHub Pages
-1. Crea un repositorio llamado `la-zona-maxima-pwa`.
-2. Descomprime este ZIP y sube **el contenido** de la carpeta a la raíz del repositorio (no subas el ZIP).
-3. Ve a **Settings → Pages**.
-4. Selecciona **Deploy from a branch**, rama `main`, carpeta `/(root)` y pulsa **Save**.
-5. Cuando se publique, abre la URL en Safari del iPhone → Compartir → Añadir a pantalla de inicio.
+1. Descarga y descomprime `la-zona-maxima-pwa-actualizada.zip`.
+2. Sube **el contenido** de esta carpeta al repositorio `la-zona-maxima-pwa` (reemplaza `index.html`, `manifest.webmanifest`, `sw.js` y `assets/`).
+3. En GitHub → Settings → Pages, deja `main` y `/(root)`.
+4. Abre la URL de GitHub Pages en Safari y recarga. Si se muestra la versión anterior, elimina la PWA de la pantalla de inicio, abre la web en Safari, recarga y vuelve a añadirla.
 
-## Importar la lista
-Abre la PWA, pulsa **Elegir archivo** y selecciona `LA ZONA MAXIMA.txt` desde Archivos. Se procesa localmente y no se envía al servidor. Al recargar, hay que importarla de nuevo.
+## Funciones
+- Menú desplegable por país/categoría y segundo menú por grupo.
+- Búsqueda de canales.
+- Reproductor nativo de Safari.
+- Carga de otros TXT/M3U; filtra enlaces a HTTPS HLS (`.m3u8`) y excluye HTTP, MPD/DASH y directivas DRM `KODIPROP`.
+- Si un canal falla, permite quitarlo de la lista activa y exportar el TXT actualizado.
 
-## Compatibilidad y privacidad
-La reproducción usa el elemento de vídeo HTML5. HLS puede funcionar en Safari si la fuente lo permite. Esta versión no incluye motor DASH ni aplica claves ClearKey; tampoco aplica automáticamente las cabeceras Kodi/VLC. No se han comprobado los enlaces. No subas la lista privada al repositorio. El service worker cachea solo la interfaz, nunca la lista ni los streams. Usa únicamente emisiones autorizadas.
+## Importante
+La lista incluida contiene únicamente enlaces HTTPS HLS sin DRM de Kodi que parecen compatibles con Safari. **No se ha podido verificar desde el entorno de creación si cada servidor responde o si el stream sigue activo**; eso requiere probarlo en tu iPhone y red. Un enlace `.m3u8` puede seguir fallando por caducidad, bloqueo geográfico, autorización, CORS/servidor o baja del canal. Los canales eliminados desde la interfaz solo se quitan de la sesión; pulsa Exportar para guardar el TXT depurado.

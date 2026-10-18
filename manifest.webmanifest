@@ -1,27 +1,21 @@
 {
-  "id": "./",
-  "name": "LA ZONA MÁXIMA",
-  "short_name": "LA ZONA MÁXIMA",
-  "description": "Reproductor PWA para listas M3U importadas localmente.",
-  "lang": "es-ES",
+  "name": "La Zona Máxima TV",
+  "short_name": "Zona Máxima",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#10131a",
-  "theme_color": "#10131a",
+  "background_color": "#0b1120",
+  "theme_color": "#101827",
   "icons": [
     {
       "src": "./assets/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
+      "type": "image/png"
     },
     {
       "src": "./assets/icon-512.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
+      "type": "image/png"
     }
   ]
 }

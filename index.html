@@ -1,7 +1,130 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#10131a"><title>LA ZONA MÁXIMA</title><link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./assets/icon.svg"><link rel="apple-touch-icon" href="./assets/icon-192.png"><style>
-:root{color-scheme:dark;--bg:#10131a;--panel:#191e28;--muted:#aab3c2;--accent:#64d7b0;--line:#30394a}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#f4f6fb;font:16px/1.45 -apple-system,BlinkMacSystemFont,sans-serif}.app{max-width:900px;margin:auto;padding:max(16px,env(safe-area-inset-top)) 14px max(24px,env(safe-area-inset-bottom))}header{display:flex;gap:12px;align-items:center;margin:8px 0 18px}.brand{width:44px;height:44px}h1{font-size:1.2rem;margin:0}.muted,.stats,.hint,.footer,.group{color:var(--muted)}.muted{font-size:.84rem}.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px;margin:12px 0}.head{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:10px}h2{font-size:1rem;margin:0}.btn,input,select{font:inherit;border-radius:11px;padding:11px;color:#f4f6fb;background:#202735;border:1px solid var(--line)}.btn{cursor:pointer}.primary{background:var(--accent);color:#071711;font-weight:700}.actions{display:flex;gap:8px;flex-wrap:wrap}.hidden{display:none!important}input[type=search],select{width:100%;background:#0f131b}.filters{display:grid;grid-template-columns:1fr;gap:8px}@media(min-width:560px){.filters{grid-template-columns:1.4fr 1fr}}.stats{font-size:.84rem;margin-top:10px}.notice{background:#252b38;padding:11px;border-radius:10px;font-size:.86rem;margin-top:10px;color:#dce4ef}.warn{color:#ffe0a6}.player{width:100%;aspect-ratio:16/9;background:#050608;border-radius:11px;display:block}.playing{font-weight:700}.list{display:flex;flex-direction:column;gap:7px;margin-top:12px}.channel{display:flex;align-items:center;gap:9px;padding:9px;border:1px solid var(--line);border-radius:12px;min-width:0}.logo,.placeholder{width:42px;height:42px;border-radius:8px;flex-shrink:0}.logo{object-fit:contain;background:#252b38}.placeholder{display:grid;place-items:center;background:#252b38;color:var(--accent);font-weight:800}.main{flex:1;min-width:0}.name{font-weight:650;overflow-wrap:anywhere}.group{font-size:.76rem;overflow-wrap:anywhere}.star{background:none;border:0;color:#ffd166;padding:8px;font-size:1.1rem}.empty{text-align:center;padding:24px;color:var(--muted)}.footer{text-align:center;font-size:.78rem;margin:20px 6px}.small{font-size:.78rem;color:var(--muted)}
-</style></head><body><main class="app"><header><img class="brand" src="./assets/icon.svg" alt=""><div><h1>LA ZONA MÁXIMA</h1><div class="muted">Reproductor IPTV · importación local</div></div></header>
-<section class="panel"><div class="head"><h2>1. Importar lista M3U</h2><span class="small">TXT / M3U</span></div><div class="actions"><button class="btn primary" id="importBtn">Elegir archivo</button><button class="btn" id="clearBtn" disabled>Vaciar lista</button><input id="fileInput" type="file" accept=".m3u,.m3u8,.txt,text/plain" class="hidden"></div><div class="stats" id="status">Selecciona LA ZONA MAXIMA.txt desde Archivos.</div><div class="notice">La lista se procesa en el navegador y no se sube al servidor. Al recargar tendrás que importarla de nuevo.</div></section>
-<section class="panel"><div class="head"><h2>2. Reproductor</h2><span class="small" id="kind">Sin canal</span></div><video id="video" class="player" controls playsinline webkit-playsinline preload="none"></video><p class="playing" id="now">Elige un canal de la lista</p><div class="hint">La reproducción depende del formato y de los permisos del servidor. Las fuentes cifradas o exclusivas de Kodi pueden no funcionar en Safari.</div><div id="notice" class="notice hidden" role="status"></div></section>
-<section class="panel"><div class="head"><h2>3. Canales</h2><span class="small" id="count">0 canales</span></div><div class="filters"><input id="search" type="search" placeholder="Buscar canal…"><select id="groups"><option value="">Todas las categorías</option></select></div><div class="actions" style="margin-top:9px"><button class="btn" id="all">Todos</button><button class="btn" id="favs">★ Favoritos</button></div><div id="list" class="list"><div class="empty">Importa una lista para mostrar canales.</div></div><div class="actions" style="justify-content:center;margin-top:12px"><button class="btn hidden" id="more">Mostrar más</button></div></section><p class="footer">PWA independiente. Utiliza solo listas y emisiones a las que tengas autorización.</p></main>
-<script>(()=>{const $=id=>document.getElementById(id),v=$('video');let channels=[],favOnly=false,limit=60,favs=new Set();try{favs=new Set(JSON.parse(localStorage.getItem('lzm-favs')||'[]'))}catch(e){}function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function attr(s,n){let m=s.match(new RegExp('(?:^|\\s)'+n+'="([^"]*)"','i'));return m?m[1].replace(/&amp;/g,'&').trim():''}function id(c){let s=c.name+'|'+c.group+'|'+c.url,h=2166136261;for(let x of s){h^=x.charCodeAt(0);h=Math.imul(h,16777619)}return(h>>>0).toString(16)}function parse(t){let out=[],pending=null,props={},lines=t.replace(/^\uFEFF/,'').split(/\r?\n/);for(let raw of lines){let l=raw.trim();if(!l)continue;if(/^##EXTINF:/i.test(l)){pending=null;props={};continue}if(/^#EXTINF:/i.test(l)){let i=l.indexOf(','),meta=i<0?l:l.slice(0,i);pending={name:i<0?'Canal sin nombre':l.slice(i+1).trim(),group:attr(meta,'group-title')||'Sin categoría',logo:attr(meta,'tvg-logo'),tvgId:attr(meta,'tvg-id')};props={};continue}if(!pending)continue;if(/^#KODIPROP:/i.test(l)){let m=l.match(/^#KODIPROP:([^=]+)=(.*)$/i);if(m)props[m[1].trim().toLowerCase()]=m[2].trim();continue}if(l.startsWith('#'))continue;if(/^https?:\/\//i.test(l)){try{let u=new URL(l),kind=/\.m3u8(?:$|\?)/i.test(l)?'HLS':(/\.mpd(?:$|\?)/i.test(l)||/manifest\.mpd/i.test(l))?'DASH':'URL';out.push({...pending,url:u.href,kind,licenseType:props['inputstream.adaptive.license_type']||'',hasKey:!!props['inputstream.adaptive.license_key']})}catch(e){}pending=null;props={}}}return out}function msg(s,w=false){$('notice').textContent=s;$('notice').classList.remove('hidden','warn');if(w)$('notice').classList.add('warn')}function clearMsg(){$('notice').classList.add('hidden')}function stop(){v.pause();v.removeAttribute('src');v.load();$('now').textContent='Elige un canal de la lista';$('kind').textContent='Sin canal';clearMsg()}function play(c){clearMsg();$('now').textContent=c.name;$('kind').textContent=c.kind;v.pause();v.removeAttribute('src');v.load();if(c.hasKey||c.licenseType){msg('Esta entrada declara reproducción cifrada de Kodi. Esta versión no aplica claves ni elude controles de acceso.',true);return}if(c.kind==='DASH'){msg('La fuente parece MPEG-DASH (.mpd). Esta versión no incluye motor DASH; Safari no garantiza reproducción directa.',true);return}v.src=c.url;v.load();let p=v.play();if(p&&p.catch)p.catch(()=>msg('Safari no ha podido iniciar la fuente. Puede requerir otro formato, cabeceras, autorización o permisos del servidor.',true))}function renderGroups(){let s=$('groups'),old=s.value,g=[...new Set(channels.map(c=>c.group))].sort((a,b)=>a.localeCompare(b,'es'));s.innerHTML='<option value="">Todas las categorías</option>'+g.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');if(g.includes(old))s.value=old}function render(){let q=$('search').value.trim().toLocaleLowerCase('es'),g=$('groups').value,f=channels.filter(c=>(!g||g===c.group)&&(!favOnly||favs.has(id(c)))&&(!q||(c.name+' '+c.group+' '+c.tvgId).toLocaleLowerCase('es').includes(q)));$('count').textContent=f.length+' canal'+(f.length===1?'':'es');let sl=f.slice(0,limit),list=$('list');if(!sl.length)list.innerHTML=`<div class="empty">${channels.length?'No hay coincidencias.':'Importa una lista para mostrar canales.'}</div>`;else{list.innerHTML=sl.map(c=>{let k=id(c),is=favs.has(k),logo=c.logo?`<img class="logo" loading="lazy" src="${esc(c.logo)}" alt="" onerror="this.outerHTML='<span class=&quot;placeholder&quot;>TV</span>'">`:'<span class="placeholder">TV</span>';return `<article class="channel">${logo}<div class="main"><div class="name">${esc(c.name)}</div><div class="group">${esc(c.group)} · ${c.kind}${c.hasKey?' · cifrado':''}</div></div><button class="star" data-fav="${k}" aria-label="Favorito">${is?'★':'☆'}</button><button class="btn" data-play="${k}">Ver</button></article>`}).join('');let map=new Map(sl.map(c=>[id(c),c]));list.querySelectorAll('[data-play]').forEach(b=>b.onclick=()=>play(map.get(b.dataset.play)));list.querySelectorAll('[data-fav]').forEach(b=>b.onclick=()=>{let k=b.dataset.fav;favs.has(k)?favs.delete(k):favs.add(k);try{localStorage.setItem('lzm-favs',JSON.stringify([...favs]))}catch(e){}render()})}$('more').classList.toggle('hidden',f.length<=limit)}$('importBtn').onclick=()=>$('fileInput').click();$('fileInput').onchange=async e=>{let f=e.target.files&&e.target.files[0];if(!f)return;try{let p=parse(await f.text());if(!p.length){$('status').textContent='No se encontraron entradas reproducibles. Comprueba que sea M3U/TXT válido.';return}channels=p;favOnly=false;limit=60;$('search').value='';renderGroups();render();$('clearBtn').disabled=false;$('status').textContent=`${f.name}: ${p.length} entradas · ${new Set(p.map(c=>c.url)).size} direcciones únicas · ${p.filter(c=>c.hasKey).length} entradas declaran claves.`;stop()}catch(e){$('status').textContent='No se pudo leer el archivo; vuelve a seleccionarlo.'}finally{e.target.value=''}};$('clearBtn').onclick=()=>{channels=[];favOnly=false;$('search').value='';$('groups').innerHTML='<option value="">Todas las categorías</option>';$('status').textContent='Lista vacía.';$('clearBtn').disabled=true;limit=60;stop();render()};$('search').oninput=()=>{limit=60;render()};$('groups').onchange=()=>{limit=60;render()};$('all').onclick=()=>{favOnly=false;limit=60;render()};$('favs').onclick=()=>{favOnly=true;limit=60;render()};$('more').onclick=()=>{limit+=60;render()};if('serviceWorker'in navigator&&location.protocol.startsWith('http'))addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}))})();</script></body></html>
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101827">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Zona Máxima">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./assets/icon-192.png">
+<title>La Zona Máxima · TV</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1120;--panel:#141e30;--line:#26354c;--muted:#9eacc1;--accent:#49d6a5}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(160deg,#111d31,#080d17 65%);color:#f4f7fb;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{padding:24px 18px 18px;background:#101827;border-bottom:1px solid var(--line)}.brand{font-size:11px;letter-spacing:.18em;color:var(--accent);font-weight:800}.title{font-size:25px;font-weight:850;margin:7px 0 4px}.sub{font-size:13px;color:var(--muted);line-height:1.4}
+main{max-width:820px;margin:auto;padding:15px 13px 48px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:15px;margin-bottom:14px}
+label{display:block;font-size:12px;color:#b9c7da;font-weight:750;margin:0 0 7px}select,input{width:100%;padding:13px;border-radius:10px;border:1px solid #35445a;background:#0d1524;color:#fff;font:inherit;min-height:46px;margin-bottom:12px}
+.controls{display:grid;grid-template-columns:1fr;gap:0}.counts{font-size:12px;color:var(--muted);margin:2px 0 12px}
+.channel{width:100%;text-align:left;background:#101a2b;border:1px solid var(--line);border-radius:12px;color:#fff;padding:13px;margin:6px 0;display:flex;gap:12px;align-items:center;min-height:62px}.channel:active{border-color:var(--accent)}.channel .num{width:36px;height:36px;border-radius:10px;background:#20334b;display:grid;place-items:center;flex-shrink:0;font-size:15px}.channel .txt{min-width:0}.channel strong{display:block;font-size:14px;overflow-wrap:anywhere}.channel small{display:block;color:var(--muted);margin-top:4px;font-size:11px}
+video{width:100%;aspect-ratio:16/9;background:#000;border-radius:12px;display:block}.now{font-weight:800;margin:0 0 10px}.message{font-size:13px;color:var(--muted);line-height:1.5}.btn{border:0;background:var(--accent);color:#062319;font-weight:850;padding:12px;border-radius:10px;width:100%;font-size:14px;margin-top:8px}.btn.secondary{background:#25364d;color:#eef5ff}.hide{display:none!important}.status{padding:10px;border-radius:10px;background:#0d1524;color:#bdcce0;font-size:12px;margin-top:10px;line-height:1.4}.warn{color:#ffd28b}
+footer{text-align:center;color:#73839a;font-size:11px;padding:12px}
+@media(min-width:650px){.controls{grid-template-columns:1fr 1fr;gap:12px}.controls label{grid-row:auto}.controls select,.controls input{margin-bottom:4px}}
+</style>
+</head>
+<body>
+<header><div class="brand">LIST IPTV · PWA</div><div class="title">La Zona Máxima</div><div class="sub">Canales por país · reproducción nativa en Safari</div></header>
+<main>
+<section class="panel">
+  <div class="controls">
+    <div><label for="country">1. Elige un país o categoría</label><select id="country"><option value="">Todos los países</option></select></div>
+    <div><label for="group">2. Filtrar por grupo</label><select id="group"><option value="">Todos los grupos</option></select></div>
+  </div>
+  <label for="search">Buscar canal</label><input id="search" type="search" placeholder="Nombre del canal…">
+  <div id="count" class="counts"></div>
+  <div id="channels"></div>
+  <div id="empty" class="message hide">No hay canales para esos filtros.</div>
+</section>
+<section id="playerPanel" class="panel hide">
+  <p id="now" class="now">Selecciona un canal</p>
+  <video id="video" controls playsinline webkit-playsinline preload="none"></video>
+  <div id="status" class="status">Pulsa reproducir si Safari no inicia el canal automáticamente.</div>
+  <button id="removeBtn" class="btn secondary" type="button">Eliminar este canal de esta lista</button>
+</section>
+<section class="panel">
+  <strong>Lista de canales de la PWA</strong>
+  <p class="message">La lista inicial solo incluye enlaces HTTPS HLS (.m3u8), sin instrucciones DRM de Kodi, que Safari puede intentar reproducir. No se ha podido comprobar desde aquí el estado en directo de cada servidor. Si un canal falla al reproducirse, elimínalo de la lista activa y exporta la lista revisada.</p>
+  <button id="exportBtn" class="btn" type="button">Exportar lista revisada (.txt)</button>
+  <button id="importBtn" class="btn secondary" type="button">Cargar otra lista M3U/TXT</button>
+  <input id="fileInput" type="file" accept=".m3u,.m3u8,.txt,text/plain,audio/x-mpegurl" class="hide">
+  <div id="listStatus" class="status"></div>
+</section>
+<footer>La reproducción depende de que el servidor siga activo y permita el acceso desde tu red.</footer>
+</main>
+<script>
+const bundled = [{"name": "ARAGON TV", "group": "AUTON (BASKET)", "country": "España", "url": "https://eu-a1-p-e-0b0e07cfe400b5ag3.cdn.mdstrm.com/live-stream-mp/dtmqa0td0lg1v/b9ba794c3d21470db3b37eea44518986/69934178aea15ae34fa39ad0/index_2.m3u8"}, {"name": "Esport 3 (Catalán)", "group": "AUTON (BASKET)", "country": "España", "url": "https://directes-tv-es.3catdirectes.cat/live-origin/esport3-hls/bitrate_3.m3u8"}, {"name": "TVG (Gallego)", "group": "AUTON (BASKET)", "country": "España", "url": "https://crtvg-europa.flumotion.cloud/crtvg/europa_high/chunks_dvr.m3u8"}, {"name": "DAZN LALIGA (AGILE)", "group": "🇪🇦 ESPAÑA - LIGA", "country": "España", "url": "https://requestrouter3.cdn.agiletv.net/__cl/cg:lv-r4/__c/DAZN_LALIGA1/__op/8fe5c65f81d13f7af6496748b5fb148b/__f/index.m3u8"}, {"name": "DAZN LALIGA 2 (AGILE)", "group": "🇪🇦 ESPAÑA - LIGA", "country": "España", "url": "https://requestrouter3.cdn.agiletv.net/__cl/cg:lv-r4/__c/DAZN_LALIGA2/__op/8fe5c65f81d13f7af6496748b5fb148b/__f/index.m3u8"}, {"name": "HYPERMOTION 2", "group": "🇪🇦 HYPERMOTION(AMZ)", "country": "España", "url": "https://live.euskaltel.com/__cl/cg:live1/__c/Liga_hypermotion_Multi_3/__op/default/__f/index.m3u8"}, {"name": "Tennis Channel 1", "group": "🇺🇸 TENNIS CHANNEL", "country": "Estados Unidos", "url": "https://amg01444-tennischannelth-tennischannelspain-orangees-gpx6v.amagi.tv/playlist/amg01444-tennischannelth-tennischannelspain-orangees/playlist.m3u8"}, {"name": "🇪🇦 Rally TV", "group": "🚗 MOTOR: F1 - RALLY TV", "country": "Internacional / Motor", "url": "https://dms.redbull.tv/v5/destination/rallytv/07f960dc-fd36-466c-971f-64a597518b83/personal_computer/http/us/es_US/playlist.m3u8"}, {"name": "🇪🇦 Rally TV (op2)", "group": "🚗 MOTOR: F1 - RALLY TV", "country": "Internacional / Motor", "url": "https://rally-tv-live.akamaized.net/hls/live/2117704/RallyTV-Pri/master_en_8160.m3u8"}];
+let channels = bundled.map((c,i)=>({...c,id:i}));
+let current = null;
+const $ = id => document.getElementById(id);
+const esc = s => String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function fillSelect(el, values, first){const old=el.value;el.innerHTML='<option value="">'+first+'</option>'+values.map(v=>'<option value="'+esc(v)+'">'+esc(v)+'</option>').join('');if(values.includes(old))el.value=old;}
+function updateMenus(){
+ const countries=[...new Set(channels.map(c=>c.country))].sort((a,b)=>a.localeCompare(b,'es'));
+ fillSelect($('country'),countries,'Todos los países');
+ const country=$('country').value;
+ const groups=[...new Set(channels.filter(c=>!country||c.country===country).map(c=>c.group))].sort((a,b)=>a.localeCompare(b,'es'));
+ fillSelect($('group'),groups,'Todos los grupos');
+ render();
+}
+function render(){
+ const country=$('country').value,group=$('group').value,q=$('search').value.trim().toLocaleLowerCase('es');
+ const list=channels.filter(c=>(!country||c.country===country)&&(!group||c.group===group)&&(!q||(c.name+' '+c.group+' '+c.country).toLocaleLowerCase('es').includes(q)));
+ $('count').textContent=list.length+' canales disponibles · '+new Set(list.map(c=>c.country)).size+' países/categorías';
+ $('channels').innerHTML=list.map((c,i)=>'<button class="channel" data-id="'+c.id+'" type="button"><span class="num">▶</span><span class="txt"><strong>'+esc(c.name)+'</strong><small>'+esc(c.country)+' · '+esc(c.group)+'</small></span></button>').join('');
+ $('empty').classList.toggle('hide',list.length!==0);
+ $('channels').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>play(Number(b.dataset.id))));
+}
+function play(id){
+ const c=channels.find(x=>x.id===id);if(!c)return;
+ current=id;$('playerPanel').classList.remove('hide');$('now').textContent=c.name;$('status').textContent='Intentando reproducir. Si no funciona, espera unos segundos y elimina el canal.';
+ const v=$('video');v.onerror=()=>{if(current===id)$('status').innerHTML='<span class="warn">Safari ha comunicado un error de reproducción.</span> Puedes probar otra vez o eliminar este canal de la lista activa.';};
+ v.pause();v.removeAttribute('src');v.load();v.src=c.url;v.load();
+ const p=v.play();if(p&&p.catch)p.catch(()=>{$('status').textContent='Safari no ha iniciado la reproducción automáticamente. Pulsa ▶ en el reproductor; si sigue fallando, elimínalo.';});
+ $('playerPanel').scrollIntoView({behavior:'smooth',block:'start'});
+}
+$('country').addEventListener('change',()=>{ $('group').value='';render(); });
+$('group').addEventListener('change',render);$('search').addEventListener('input',render);
+$('removeBtn').addEventListener('click',()=>{
+ if(current===null)return;
+ const c=channels.find(x=>x.id===current);if(!c)return;
+ channels=channels.filter(x=>x.id!==current);$('video').pause();$('video').removeAttribute('src');$('video').load();
+ $('playerPanel').classList.add('hide');current=null;$('listStatus').textContent='Eliminado de la lista activa: '+c.name+'. Exporta la lista revisada para guardarlo de forma permanente.';updateMenus();
+});
+$('exportBtn').addEventListener('click',()=>{
+ const lines=['#EXTM3U'];
+ channels.forEach(c=>{lines.push('#EXTINF:-1 country="'+c.country.replace(/"/g,'')+'" group-title="'+c.group.replace(/"/g,'')+'",'+c.name);lines.push(c.url);});
+ const blob=new Blob([lines.join('\r\n')+'\r\n'],{type:'text/plain;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='LA_ZONA_MAXIMA_REVISADA.txt';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+ $('listStatus').textContent='Lista exportada con '+channels.length+' canales. Los canales eliminados no se incluyen.';
+});
+$('importBtn').addEventListener('click',()=>$('fileInput').click());
+$('fileInput').addEventListener('change',async e=>{
+ const f=e.target.files&&e.target.files[0];if(!f)return;
+ const txt=await f.text();const parsed=parseM3U(txt);
+ if(!parsed.length){$('listStatus').textContent='No he encontrado canales con enlaces HTTPS HLS (.m3u8) compatibles con esta PWA.';return;}
+ channels=parsed.map((c,i)=>({...c,id:i}));current=null;$('playerPanel').classList.add('hide');updateMenus();
+ $('listStatus').textContent='Cargados '+channels.length+' canales compatibles. Se excluyeron automáticamente enlaces HTTP, MPD/DASH, instrucciones DRM de Kodi y URLs no reconocidas.';
+ e.target.value='';
+});
+function parseM3U(txt){
+ const out=[];const blocks=txt.split(/(?=^#EXTINF:)/m);
+ for(const block of blocks){
+  if(!block.startsWith('#EXTINF:'))continue;
+  const lines=block.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+  const ext=lines[0],url=lines.find(x=>/^https?:\/\//i.test(x));if(!url)continue;
+  if(!url.toLowerCase().startsWith('https://')||!url.toLowerCase().split('?')[0].endsWith('.m3u8')||lines.some(x=>/^KODIPROP:/i.test(x)))continue;
+  const get=(key)=>{const m=ext.match(new RegExp(key+'="([^"]*)"','i'));return m?m[1]:''};
+  const group=get('group-title')||'Sin categoría';
+  const name=(ext.split(',').slice(1).join(',').trim()||'Canal');
+  let country=get('country');
+  if(!country){const g=group.toUpperCase();country=(g.includes('ESPAÑA')||g.includes('HYPERMOTION')||g.includes('AUTON'))?'España':(g.includes('USA')||g.includes('TENNIS CHANNEL'))?'Estados Unidos':(g.includes('MOTOR')||name.toUpperCase().includes('RALLY'))?'Internacional / Motor':group;}
+  const key=url.split('?')[0].toLowerCase();if(out.some(c=>c.url.split('?')[0].toLowerCase()===key))continue;
+  out.push({name,group,country,url});
+ }
+ return out.sort((a,b)=>a.country.localeCompare(b.country,'es')||a.group.localeCompare(b.group,'es')||a.name.localeCompare(b.name,'es'));
+}
+$('listStatus').textContent='Lista inicial cargada: '+channels.length+' canales HTTPS HLS candidatos. La disponibilidad real se confirma al reproducir.';
+updateMenus();
+if('serviceWorker'in navigator){addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
+</script>
+</body></html>
