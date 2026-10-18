@@ -34,6 +34,7 @@ button{cursor:pointer;background:#134e4a;border-color:#1c7770;font-weight:650}
 .channel .meta{font-size:.78rem;color:var(--muted);display:block;margin-top:3px}
 .empty{color:var(--muted);text-align:center;padding:22px 8px}
 .note{font-size:.8rem;color:var(--muted);line-height:1.45}
+.football-links{display:grid;gap:9px}.football-link{display:block;padding:12px;border:1px solid var(--line);border-radius:12px;background:#142136;color:var(--text);text-decoration:none}.football-link strong{display:block;margin-bottom:3px}.football-link span{font-size:.8rem;color:var(--muted);display:block}.football-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
 @media(max-width:520px){.controls{grid-template-columns:1fr}.full{grid-column:auto}main{padding:10px}.panel{padding:11px}}
 </style>
 </head>
@@ -66,6 +67,29 @@ button{cursor:pointer;background:#134e4a;border-color:#1c7770;font-weight:650}
     <div class="status" id="playerStatus"></div>
   </section>
 
+  <section class="panel" id="yoigoPanel">
+    <div class="listhead"><strong>📡 Yoigo TV</strong></div>
+    <p class="note">Acceso directo al servicio oficial de Yoigo TV. Pulsa el botón e inicia sesión allí con tu usuario y contraseña. Por seguridad, no introduzcas ni guardes tus credenciales dentro de La Zona Máxima.</p>
+    <div class="football-links">
+      <a class="football-link" href="https://yoigotv.yoigo.com/" target="_blank" rel="noopener noreferrer"><strong>▶ Abrir Yoigo TV</strong><span>Entrar en la plataforma oficial para ver los canales incluidos en tu contrato.</span></a>
+      <a class="football-link" href="https://www.yoigo.com/ayuda/yoigo-tv" target="_blank" rel="noopener noreferrer"><strong>ℹ Ayuda de Yoigo TV</strong><span>Instrucciones oficiales de acceso, dispositivos y recuperación de contraseña.</span></a>
+    </div>
+    <p class="note">La reproducción se realiza en la plataforma oficial, fuera del reproductor IPTV de esta PWA. Si el acceso web no funciona en iPhone, utiliza la app oficial Yoigo TV desde App Store.</p>
+  </section>
+
+  <section class="panel" id="footballPanel">
+    <div class="listhead"><strong>⚽ Fútbol y LaLiga</strong></div>
+    <p class="note">Accesos oficiales a programación y calendario, más una lista pública de canales deportivos. Los enlaces oficiales de Movistar requieren la suscripción correspondiente. La lista pública no incluye la señal de pago de Movistar LaLiga.</p>
+    <div class="football-links">
+      <a class="football-link" href="https://www.movistarplus.es/canal/m-laliga?id=mliga" target="_blank" rel="noopener noreferrer"><strong>📺 M+ LALIGA — programación oficial</strong><span>Consultar emisiones y ver el canal con una suscripción válida.</span></a>
+      <a class="football-link" href="https://www.movistarplus.es/canal/m-plus-laliga-1?id=mlig1" target="_blank" rel="noopener noreferrer"><strong>📺 M+ LALIGA 2</strong><span>Programación oficial del canal adicional.</span></a>
+      <a class="football-link" href="https://www.laliga.com/laliga-easports/calendario" target="_blank" rel="noopener noreferrer"><strong>📅 Calendario oficial de LaLiga</strong><span>Jornadas, horarios, resultados y dónde ver cada partido.</span></a>
+      <a class="football-link" href="https://iptv-org.github.io/iptv/categories/sports.m3u" target="_blank" rel="noopener noreferrer"><strong>🌍 Lista M3U pública de deportes</strong><span>Abrir o descargar la lista; después impórtala desde el selector de archivos superior.</span></a>
+    </div>
+    <div class="football-actions"><button id="footballOnly" type="button">Ver fútbol de mi lista</button><button id="allChannels" type="button">Mostrar todos</button></div>
+    <div class="status" id="footballStatus">El filtro busca canales cuyo nombre o grupo parece relacionado con fútbol; no verifica derechos ni disponibilidad.</div>
+  </section>
+
   <section class="panel">
     <div class="listhead"><strong>Canales</strong><span class="count" id="count">0 canales</span></div>
     <div id="channels" class="channels"><div class="empty">Carga una lista M3U para mostrar canales.</div></div>
@@ -74,7 +98,7 @@ button{cursor:pointer;background:#134e4a;border-color:#1c7770;font-weight:650}
 </main>
 <script>
 const $ = id => document.getElementById(id);
-let allChannels = [], visibleChannels = [], shown = 100, currentObjectUrl = null;
+let allChannels = [], visibleChannels = [], shown = 100, currentObjectUrl = null, footballOnly = false;
 const normal = s => (s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
 const attr = (line, key) => {
   const re = new RegExp('(?:^|\\\\s)' + key + '="([^"]*)"', 'i');
@@ -127,9 +151,13 @@ function renderCountries() {
   if(countries.includes(current)) $("country").value=current;
 }
 function esc(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function isFootball(c) {
+  const text=normal([c.name,c.group,c.tvgId].join(" "));
+  return /\b(futbol|football|soccer|laliga|la liga|liga|champions|uefa|europa league|premier league|copa del rey|mundial|world cup|fifa|real madrid|barcelona|atletico|atletico madrid|betis|sevilla|valencia|athletic|osasuna|celta|rayo|espanyol|elche|villarreal|getafe|malaga|deportivo|racing|levante|real sociedad|teledeporte)\b/.test(text);
+}
 function applyFilters() {
   const country=$("country").value, lang=$("language").value, q=normal($("search").value);
-  visibleChannels=allChannels.filter(c=>(!country||c.country===country)&&(lang==="all"||(lang==="spanish"?c.spanish:!c.spanish))&&(!q||normal(c.name+" "+c.group+" "+c.tvgId+" "+c.country).includes(q)));
+  visibleChannels=allChannels.filter(c=>(!footballOnly||isFootball(c))&&(!country||c.country===country)&&(lang==="all"||(lang==="spanish"?c.spanish:!c.spanish))&&(!q||normal(c.name+" "+c.group+" "+c.tvgId+" "+c.country).includes(q)));
   visibleChannels.sort((a,b)=>a.country.localeCompare(b.country,"es")||a.name.localeCompare(b.name,"es"));
   shown=100; renderChannels();
 }
@@ -163,6 +191,8 @@ $("playlistFile").addEventListener("change",async e=>{
 ["country","language"].forEach(id=>$(id).addEventListener("change",applyFilters));
 $("search").addEventListener("input",applyFilters);
 $("reset").addEventListener("click",()=>{$("country").value="";$("language").value="all";$("search").value="";applyFilters();});
+$("footballOnly").addEventListener("click",()=>{footballOnly=true;$("footballStatus").textContent="Filtro de fútbol activado sobre la lista cargada. Los resultados dependen de los nombres y metadatos de cada canal.";applyFilters();document.getElementById("channels").scrollIntoView({behavior:"smooth",block:"start"});});
+$("allChannels").addEventListener("click",()=>{footballOnly=false;$("footballStatus").textContent="Mostrando todos los canales según los filtros elegidos arriba.";applyFilters();document.getElementById("channels").scrollIntoView({behavior:"smooth",block:"start"});});
 $("more").addEventListener("click",()=>{shown+=100;renderChannels();});
 (async()=>{
   if("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js").catch(()=>{});

@@ -1,22 +1,22 @@
-# La Zona Máxima — PWA con filtros
+LA ZONA MAXIMA — PWA CON SECCION DE FUTBOL
 
-## Incluye
-- Filtro desplegable por país.
-- Filtro estimado de canales en español/hispanos.
-- Búsqueda por nombre.
-- Orden por país y nombre del canal.
-- Importación de archivos M3U/M3U8 desde Archivos en iPhone.
-- Si `La_Zona_Maxima_IPTV_por_pais_y_canal.m3u` está en la raíz, intenta cargarla automáticamente.
+CONTENIDO
+- index.html: PWA con filtros por país/idioma, búsqueda, reproductor, acceso oficial a Yoigo TV y sección Fútbol y LaLiga.
+- manifest.webmanifest y sw.js: instalación y caché de la PWA.
+- La_Zona_Maxima_IPTV_por_pais_y_canal.m3u: lista global incluida.
 
-## Publicar/actualizar en GitHub Pages
-1. Descarga y descomprime el ZIP.
-2. Sube `index.html`, `manifest.webmanifest`, `sw.js` y `La_Zona_Maxima_IPTV_por_pais_y_canal.m3u` al directorio raíz del repositorio de tu PWA.
-3. Si GitHub pregunta si debe reemplazar `index.html` y `sw.js`, confirma para aplicar la nueva interfaz.
-4. Espera a que GitHub Pages publique los cambios.
-5. En iPhone, cierra la PWA y vuelve a abrirla. Si conserva la versión antigua, elimina la PWA de la pantalla de inicio y añádela otra vez desde Safari.
+NUEVA SECCION
+- Acceso directo a https://yoigotv.yoigo.com/ y a la ayuda oficial de Yoigo TV. El inicio de sesión se realiza en Yoigo; la PWA no almacena credenciales ni integra el reproductor protegido.
+- Acceso a la programación oficial de M+ LALIGA y M+ LALIGA 2.
+- Calendario oficial de LaLiga.
+- Enlace a lista M3U pública de canales deportivos. Para cargarla: abre el enlace, guarda el archivo si el navegador lo permite y usa el selector «Cargar lista M3U/M3U8» de la app.
+- Botón para filtrar canales de fútbol dentro de la lista cargada. Es un filtro aproximado por nombre/metadatos.
 
-## Idioma: limitación
-El filtro «Español / hispano» es una estimación basada en el país, el nombre del canal, el grupo y `tvg-id`. No detecta la pista de audio real de la emisión; algunos canales pueden quedar mal clasificados.
+PUBLICAR EN GITHUB PAGES
+1. Descomprime el ZIP.
+2. En el repositorio de GitHub, sube y reemplaza index.html, manifest.webmanifest, sw.js y La_Zona_Maxima_IPTV_por_pais_y_canal.m3u en la raíz.
+3. Espera a que GitHub Pages publique los cambios.
+4. En el iPhone, cierra la PWA por completo y vuelve a abrirla. Si sigue la versión anterior, abre la web en Safari y recarga; el service worker ahora usa una caché nueva.
 
-## Reproducción
-Safari reproduce mejor emisiones HLS `.m3u8`. Los flujos DASH `.mpd`, DRM, autenticados o con restricciones geográficas pueden no funcionar. La app no elimina ni desbloquea protecciones.
+IMPORTANTE
+Los enlaces de Movistar son oficiales y pueden exigir una suscripción. La lista pública de deportes no es una lista de Movistar LaLiga ni garantiza que todos los canales estén disponibles en España o se reproduzcan en Safari. La PWA no incluye credenciales ni evita suscripciones, DRM o restricciones geográficas.
