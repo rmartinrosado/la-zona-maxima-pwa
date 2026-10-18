@@ -1,19 +1,15 @@
-LA ZONA MAXIMA — PWA ACTUALIZADA
+LA ZONA MAXIMA — CORRECCION DE PERSISTENCIA
 
-Cambios:
-- Eliminados los filtros por país e idioma.
-- Se mantiene la búsqueda por nombre de canal y el filtro de fútbol.
-- Eliminados los accesos a Movistar.
-- Se mantiene el acceso a Yoigo TV y su ayuda oficial.
-- El reproductor aparece inmediatamente debajo del canal seleccionado, y la pantalla se desplaza hasta el reproductor para que no tengas que volver arriba.
-- Actualizada la lista M3U integrada con la lista consolidada más reciente.
+Corrección:
+- La lista M3U que importes se guarda en IndexedDB del navegador/PWA del iPhone.
+- Al cerrar y volver a abrir, se restaura primero la última lista importada.
+- Se añade el botón “Borrar lista guardada” para eliminarla cuando quieras.
+- Se ha cambiado la versión de caché del Service Worker para forzar la actualización.
 
-Publicar en GitHub Pages:
-1. Descomprime el ZIP.
-2. Sube a la raíz del repositorio el contenido de la carpeta La_Zona_Maxima_PWA_Futbol, reemplazando index.html, sw.js, manifest.webmanifest y la lista M3U.
-3. Espera a que GitHub Pages publique.
-4. Cierra completamente la PWA en el iPhone y vuelve a abrirla. La caché se ha versionado para forzar la actualización.
+Publicación:
+1. Descomprime este ZIP.
+2. Sube el contenido de La_Zona_Maxima_PWA_Futbol a la raíz del repositorio GitHub Pages y reemplaza los archivos.
+3. Espera la publicación, cierra completamente la PWA y vuelve a abrirla.
+4. Importa una lista una sola vez. La próxima vez debería seguir cargada.
 
-Nota:
-La lista contiene enlaces que no se han probado individualmente en Safari; algunos pueden no funcionar por disponibilidad, geobloqueo o formato.
-Yoigo TV se abre en su plataforma oficial y no guarda las credenciales en esta PWA.
+La lista se guarda localmente en ese navegador/dispositivo. Si borras los datos del sitio o abres la PWA en otro dispositivo, tendrás que importarla allí también.
