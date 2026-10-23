@@ -33,6 +33,10 @@ button{cursor:pointer;background:#134e4a;border-color:#1c7770;font-weight:650}
 .channel .name{font-weight:650;display:block;overflow-wrap:anywhere}
 .channel .meta{font-size:.78rem;color:var(--muted);display:block;margin-top:3px}
 .url-row{display:grid;grid-template-columns:1fr auto;gap:8px;margin:0}.url-row button{width:auto;padding:11px 16px}button:disabled{opacity:.6}
+.server-box{margin-top:12px;border:1px solid var(--line);border-radius:12px;background:#142136;padding:0 11px}
+.server-box summary{padding:12px 0;font-weight:650;cursor:pointer}
+.server-form{display:grid;gap:10px;padding-bottom:12px}
+.check{display:flex;align-items:center;gap:8px;margin:0;font-size:.85rem}.check input{width:auto}
 .empty{color:var(--muted);text-align:center;padding:22px 8px}
 .note{font-size:.8rem;color:var(--muted);line-height:1.45}
 .football-links{display:grid;gap:9px}.football-link{display:block;padding:12px;border:1px solid var(--line);border-radius:12px;background:#142136;color:var(--text);text-decoration:none}.football-link strong{display:block;margin-bottom:3px}.football-link span{font-size:.8rem;color:var(--muted);display:block}.football-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
@@ -53,6 +57,17 @@ button{cursor:pointer;background:#134e4a;border-color:#1c7770;font-weight:650}
       <input id="playlistUrl" type="url" inputmode="url" autocomplete="url" autocapitalize="off" spellcheck="false" placeholder="https://…/lista.m3u">
       <button id="loadUrl" type="submit">Cargar</button>
     </form>
+    <details class="server-box" id="serverBox">
+      <summary>🖥️ Conectar a un servidor IPTV</summary>
+      <form id="serverForm" class="server-form">
+        <div><label for="srvHost">Dirección del servidor</label><input id="srvHost" type="url" inputmode="url" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="http://servidor.com:8080" required></div>
+        <div><label for="srvUser">Usuario</label><input id="srvUser" type="text" autocapitalize="off" autocorrect="off" spellcheck="false" autocomplete="username"></div>
+        <div><label for="srvPass">Contraseña</label><input id="srvPass" type="password" autocomplete="current-password"></div>
+        <label class="check"><input id="srvRemember" type="checkbox"> Recordar servidor y usuario en este iPhone</label>
+        <button id="srvConnect" type="submit">Conectar y ver canales</button>
+        <p class="note" style="margin:0">Si dejas usuario y contraseña vacíos, se descargará la lista directamente desde la dirección indicada.</p>
+      </form>
+    </details>
     <div class="status" id="sourceStatus">La lista importada se guardará en este iPhone para conservarla al cerrar la PWA.</div>
     <button id="clearSaved" type="button" class="full" style="margin-top:8px;background:#374151;border-color:#4b5563">Borrar lista guardada</button>
     <div class="controls" style="margin-top:12px">
@@ -277,6 +292,52 @@ $("urlForm").addEventListener("submit",async e=>{
     $("sourceStatus").textContent=msg;
   } finally { btn.disabled=false; btn.textContent="Cargar"; }
 });
+const SERVER_KEY="lzm-server";
+function fetchErrorText(err,url) {
+  if(err&&err.message&&!/fetch|load failed|network/i.test(err.message)) return err.message;
+  if(location.protocol==="https:"&&url.startsWith("http:"))
+    return "iPhone bloquea la descarga: la app está en https y el servidor usa http. Prueba con la dirección https del servidor si la tiene, o descarga la lista y cárgala desde Archivos.";
+  return "No se pudo conectar. Revisa la dirección, o el servidor puede bloquear el acceso desde otras webs (CORS).";
+}
+$("serverForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  let host=$("srvHost").value.trim().replace(/\/+$/,"");
+  const user=$("srvUser").value.trim(), pass=$("srvPass").value;
+  if(!/^https?:\/\//i.test(host)) host="http://"+host;
+  let url;
+  try {
+    const u=new URL(host);
+    if(user||pass) {
+      // Formato estándar de paneles IPTV: get.php devuelve la lista M3U de la cuenta.
+      // output=m3u8 pide emisiones HLS, que son las que reproduce Safari.
+      u.pathname=u.pathname.replace(/\/(get\.php)?$/,"")+"/get.php";
+      u.search=new URLSearchParams({username:user,password:pass,type:"m3u_plus",output:"m3u8"}).toString();
+    }
+    url=u.href;
+  } catch(_) { $("sourceStatus").textContent="La dirección del servidor no es válida.";return; }
+  try {
+    if($("srvRemember").checked) localStorage.setItem(SERVER_KEY,JSON.stringify({host,user}));
+    else localStorage.removeItem(SERVER_KEY);
+  } catch(_) {}
+  const btn=$("srvConnect"); btn.disabled=true; btn.textContent="Conectando…";
+  $("sourceStatus").textContent="Conectando con el servidor…";
+  try {
+    const r=await fetch(url,{cache:"no-store"});
+    if(r.status===401||r.status===403) throw new Error("El servidor ha rechazado el acceso. Revisa usuario y contraseña.");
+    if(!r.ok) throw new Error(`El servidor respondió con error ${r.status}.`);
+    const text=await r.text();
+    if(!text.trim()) throw new Error("El servidor ha devuelto una lista vacía. Revisa usuario y contraseña o si la cuenta está activa.");
+    await loadText(text,new URL(host).hostname,{persist:true});
+    $("srvPass").value=""; $("serverBox").open=false;
+    $("channels").scrollIntoView({behavior:"smooth",block:"start"});
+  } catch(err) {
+    $("sourceStatus").textContent=fetchErrorText(err,url);
+  } finally { btn.disabled=false; btn.textContent="Conectar y ver canales"; }
+});
+try {
+  const s=JSON.parse(localStorage.getItem(SERVER_KEY)||"null");
+  if(s){$("srvHost").value=s.host||"";$("srvUser").value=s.user||"";$("srvRemember").checked=true;}
+} catch(_) {}
 $("clearSaved").addEventListener("click",async()=>{
   try {
     await deleteSavedPlaylist();
