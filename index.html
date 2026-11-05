@@ -33,7 +33,7 @@ button{cursor:pointer;background:#134e4a;border-color:#1c7770;font-weight:650}
 .channel .name{font-weight:650;display:block;overflow-wrap:anywhere}
 .channel .meta{font-size:.78rem;color:var(--muted);display:block;margin-top:3px}
 .url-row{display:grid;grid-template-columns:1fr auto;gap:8px;margin:0}.url-row button{width:auto;padding:11px 16px}button:disabled{opacity:.6}
-.public-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.public-grid button{padding:12px 8px}
+.public-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.public-grid button{padding:12px 8px}.public-grid .public-all{grid-column:1/-1;background:#1e3a8a;border-color:#3b5bdb}.public-all small{display:block;font-weight:400;font-size:.75rem;color:#c7d2fe;margin-top:3px}
 .server-box{margin-top:12px;border:1px solid var(--line);border-radius:12px;background:#142136;padding:0 11px}
 .server-box summary{padding:12px 0;font-weight:650;cursor:pointer}
 .server-form{display:grid;gap:10px;padding-bottom:12px}
@@ -90,6 +90,7 @@ button{cursor:pointer;background:#134e4a;border-color:#1c7770;font-weight:650}
     <div class="listhead"><strong>🌍 Canales públicos (iptv-org)</strong></div>
     <p class="note">Listas gratuitas y legales de canales en abierto, actualizadas a diario por el proyecto iptv-org. Pulsa una para cargarla; sustituye a la lista actual y se guarda en este iPhone.</p>
     <div class="public-grid">
+      <button type="button" class="public-all" data-public="https://iptv-org.github.io/iptv/index.country.m3u" data-label="Todos los canales del mundo (iptv-org)">🌐 Todos los canales del mundo<small>Base de datos completa, unos 18.000 canales ordenados por país</small></button>
       <button type="button" data-public="https://iptv-org.github.io/iptv/countries/es.m3u" data-label="España (iptv-org)">🇪🇸 España</button>
       <button type="button" data-public="https://iptv-org.github.io/iptv/languages/spa.m3u" data-label="En español (iptv-org)">🗣️ En español</button>
       <button type="button" data-public="https://iptv-org.github.io/iptv/categories/sports.m3u" data-label="Deportes (iptv-org)">⚽ Deportes</button>
@@ -132,6 +133,7 @@ const DB_NAME = "la-zona-maxima-db";
 const DB_VERSION = 1;
 const PLAYLIST_KEY = "saved-playlist";
 let allChannels = [], visibleChannels = [], shown = 100, currentObjectUrl = null, footballOnly = false, selectedUrl = "";
+const COLL = new Intl.Collator("es",{sensitivity:"base"});
 const normal = s => (s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
 const attr = (line, key) => {
   const re = new RegExp('(?:^|\\s)' + key + '="([^"]*)"', 'i');
@@ -178,7 +180,7 @@ function isFootball(c) {
 function applyFilters() {
   const q=normal($("search").value);
   visibleChannels=allChannels.filter(c=>(!footballOnly||isFootball(c))&&(!q||normal(c.name+" "+c.group+" "+c.tvgId).includes(q)));
-  visibleChannels.sort((a,b)=>a.group.localeCompare(b.group,"es")||a.name.localeCompare(b.name,"es"));
+  visibleChannels.sort((a,b)=>COLL.compare(a.group,b.group)||COLL.compare(a.name,b.name));
   shown=100; renderChannels();
 }
 function renderChannels() {
@@ -386,7 +388,8 @@ $("clearSaved").addEventListener("click",async()=>{
     $("playlistFile").value="";
   } catch(e) {$("sourceStatus").textContent="No se pudo borrar la lista guardada.";}
 });
-$("search").addEventListener("input",applyFilters);
+let searchTimer;
+$("search").addEventListener("input",()=>{clearTimeout(searchTimer);searchTimer=setTimeout(applyFilters,allChannels.length>3000?250:0);});
 $("reset").addEventListener("click",()=>{$("search").value="";applyFilters();});
 $("footballOnly").addEventListener("click",()=>{footballOnly=true;$("footballStatus").textContent="Filtro de fútbol activado sobre la lista cargada.";applyFilters();$("channels").scrollIntoView({behavior:"smooth",block:"start"});});
 $("allChannels").addEventListener("click",()=>{footballOnly=false;$("footballStatus").textContent="Mostrando todos los canales.";applyFilters();$("channels").scrollIntoView({behavior:"smooth",block:"start"});});
