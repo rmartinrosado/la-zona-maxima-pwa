@@ -33,6 +33,7 @@ button{cursor:pointer;background:#134e4a;border-color:#1c7770;font-weight:650}
 .channel .name{font-weight:650;display:block;overflow-wrap:anywhere}
 .channel .meta{font-size:.78rem;color:var(--muted);display:block;margin-top:3px}
 .url-row{display:grid;grid-template-columns:1fr auto;gap:8px;margin:0}.url-row button{width:auto;padding:11px 16px}button:disabled{opacity:.6}
+.public-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.public-grid button{padding:12px 8px}
 .server-box{margin-top:12px;border:1px solid var(--line);border-radius:12px;background:#142136;padding:0 11px}
 .server-box summary{padding:12px 0;font-weight:650;cursor:pointer}
 .server-form{display:grid;gap:10px;padding-bottom:12px}
@@ -85,12 +86,27 @@ button{cursor:pointer;background:#134e4a;border-color:#1c7770;font-weight:650}
     <p class="note">La reproducción se realiza en la plataforma oficial, fuera del reproductor IPTV de esta PWA. Si el acceso web no funciona en iPhone, utiliza la app oficial Yoigo TV desde App Store.</p>
   </section>
 
+  <section class="panel" id="publicPanel">
+    <div class="listhead"><strong>🌍 Canales públicos (iptv-org)</strong></div>
+    <p class="note">Listas gratuitas y legales de canales en abierto, actualizadas a diario por el proyecto iptv-org. Pulsa una para cargarla; sustituye a la lista actual y se guarda en este iPhone.</p>
+    <div class="public-grid">
+      <button type="button" data-public="https://iptv-org.github.io/iptv/countries/es.m3u" data-label="España (iptv-org)">🇪🇸 España</button>
+      <button type="button" data-public="https://iptv-org.github.io/iptv/languages/spa.m3u" data-label="En español (iptv-org)">🗣️ En español</button>
+      <button type="button" data-public="https://iptv-org.github.io/iptv/categories/sports.m3u" data-label="Deportes (iptv-org)">⚽ Deportes</button>
+      <button type="button" data-public="https://iptv-org.github.io/iptv/categories/news.m3u" data-label="Noticias (iptv-org)">📰 Noticias</button>
+      <button type="button" data-public="https://iptv-org.github.io/iptv/categories/movies.m3u" data-label="Cine (iptv-org)">🎬 Cine</button>
+      <button type="button" data-public="https://iptv-org.github.io/iptv/categories/kids.m3u" data-label="Infantil (iptv-org)">🧸 Infantil</button>
+      <button type="button" data-public="https://iptv-org.github.io/iptv/categories/music.m3u" data-label="Música (iptv-org)">🎵 Música</button>
+      <button type="button" data-public="https://iptv-org.github.io/iptv/categories/documentary.m3u" data-label="Documentales (iptv-org)">🌋 Documentales</button>
+    </div>
+    <div class="status" id="publicStatus">No todos los canales funcionan siempre ni en Safari; si uno falla, prueba otro.</div>
+  </section>
+
   <section class="panel" id="footballPanel">
     <div class="listhead"><strong>⚽ Fútbol y LaLiga</strong></div>
-    <p class="note">Accesos a calendario de LaLiga y a una lista pública de canales deportivos. La lista pública no garantiza que todos los canales estén disponibles en España ni que se reproduzcan en Safari.</p>
+    <p class="note">Calendario de LaLiga y filtro de fútbol sobre la lista cargada. Para canales deportivos gratuitos, usa el botón ⚽ Deportes de Canales públicos.</p>
     <div class="football-links">
       <a class="football-link" href="https://www.laliga.com/laliga-easports/calendario" target="_blank" rel="noopener noreferrer"><strong>📅 Calendario oficial de LaLiga</strong><span>Jornadas, horarios, resultados y dónde ver cada partido.</span></a>
-      <a class="football-link" href="https://iptv-org.github.io/iptv/categories/sports.m3u" target="_blank" rel="noopener noreferrer"><strong>🌍 Lista M3U pública de deportes</strong><span>Abrir o descargar la lista; después impórtala desde el selector de archivos superior.</span></a>
     </div>
     <div class="football-actions"><button id="footballOnly" type="button">Ver fútbol de mi lista</button><button id="allChannels" type="button">Mostrar todos</button></div>
     <div class="status" id="footballStatus">El filtro busca canales cuyo nombre o grupo parece relacionado con fútbol; no verifica derechos ni disponibilidad.</div>
@@ -292,6 +308,26 @@ $("urlForm").addEventListener("submit",async e=>{
     $("sourceStatus").textContent=msg;
   } finally { btn.disabled=false; btn.textContent="Cargar"; }
 });
+document.querySelectorAll("button[data-public]").forEach(btn=>btn.addEventListener("click",async()=>{
+  const url=btn.dataset.public, label=btn.dataset.label, original=btn.textContent;
+  document.querySelectorAll("button[data-public]").forEach(b=>b.disabled=true);
+  btn.textContent="Cargando…";
+  $("publicStatus").textContent=`Descargando ${label}…`;
+  try {
+    const r=await fetch(url,{cache:"no-store"});
+    if(!r.ok) throw new Error(`El servidor respondió con error ${r.status}.`);
+    await loadText(await r.text(),label,{persist:true});
+    $("playlistFile").value="";
+    footballOnly=false; applyFilters();
+    $("publicStatus").textContent=$("sourceStatus").textContent;
+    $("channels").scrollIntoView({behavior:"smooth",block:"start"});
+  } catch(err) {
+    $("publicStatus").textContent=(err&&err.message&&!/fetch|load failed|network/i.test(err.message))?err.message:"No se pudo descargar la lista. Comprueba la conexión a internet e inténtalo de nuevo.";
+  } finally {
+    btn.textContent=original;
+    document.querySelectorAll("button[data-public]").forEach(b=>b.disabled=false);
+  }
+}));
 const SERVER_KEY="lzm-server";
 function fetchErrorText(err,url) {
   if(err&&err.message&&!/fetch|load failed|network/i.test(err.message)) return err.message;
