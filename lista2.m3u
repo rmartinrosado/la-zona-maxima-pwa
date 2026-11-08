@@ -1,0 +1,134 @@
+#EXTM3U
+#EXTINF:-1 group-title=" ⬇️⬇️ SOLO CANALES MPD ⬇️⬇️", ⬇️⬇️ ¡Elige grupo y canal y disfruta! ⬇️⬇️
+https://ojete
+#EXTINF:-1 group-title="EVDAZN" content-type="playlist",EVENTOS BRO
+https://www.dropbox.com/scl/fi/bt3alb17b08zs9fdq5hna/EVDAZNES.txt?rlkey=uni1ynni2us72jd11hknu9gbk&st=jy6u6q0h&dl=1
+#EXTINF:-1 group-title="PUB TELE" content-type="playlist", OPCION BAR (MISMA CALIDAD)
+https://www.dropbox.com/scl/fi/2oji4emckvw8uii5jgrqf/BAR-TV.m3u?rlkey=ja0ao923d0l18amjwpz6lzogo&st=sbfykssj&dl=1
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" tvg-logo="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsYoLr1q3_h6Jo21AgDZhyK62VNC6EdYRbAg&s" group-title="🚗 MOTOR: F1 - RALLY TV" tvg-id="DE | Rally TV" , 🇪🇦 Rally TV
+https://dms.redbull.tv/v5/destination/rallytv/07f960dc-fd36-466c-971f-64a597518b83/personal_computer/http/us/es_US/playlist.m3u8
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" tvg-logo="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsYoLr1q3_h6Jo21AgDZhyK62VNC6EdYRbAg&s" group-title="🚗 MOTOR: F1 - RALLY TV" tvg-id="DE | Rally TV" , 🇪🇦 Rally TV (op2)
+https://rally-tv-live.akamaized.net/hls/live/2117704/RallyTV-Pri/master_en_8160.m3u8
+#EXTINF:-1 tvg-id="LaLiga TV Hypermotion 3" tvg-name="" tvg-logo="https://estatico.emisiondof6.com/recorte/m-NEONEGR/canal/MLIGS3" group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" group-title="🇪🇦 HYPERMOTION(AMZ)", HYPERMOTION 3 (Euskaltel)
+#EXTVLCOPT:http-user-agent=Chrome/61.0.3163.100
+https://live.euskaltel.com/__cl/cg:live1/__c/Liga_hypermotion_Multi_3/__op/default/__f/index.m3u8
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" group-title="AUTON (BASKET)" tvg-logo="https://www.vodafone.es/c/microsite/1500201362636/img/492.png" tvg-id="TV3 Catalunya 1080" ,TV3 Cat
+#EXTVLCOPT:http-user-agent=Chrome/61.0.3163.100
+http://vfpc.gb.vodafone.es/sdash/LIVE$CUP124/2.mpd/Manifest?start=LIVE&end=END&device=DASH_AVC_HD
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" group-title="AUTON (BASKET)" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Esport%203.png" tvg-id="Esport 3", Esport 3 (Catalán)
+https://directes-tv-es.3catdirectes.cat/live-origin/esport3-hls/bitrate_3.m3u8
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" group-title="AUTON (BASKET)" tvg-logo="https://www.iuvenor.es/wp-content/uploads/2016/05/tvg-logo-300x242.jpg" tvg-id="", TVG (Gallego)
+https://crtvg-europa.flumotion.cloud/crtvg/europa_high/chunks_dvr.m3u8
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" group-title="AUTON (BASKET)" tvg-logo="https://www.vectorlogo.es/wp-content/uploads/2020/03/logo-vector-aragon-television.jpg", ARAGON TV
+https://eu-a1-p-e-0b0e07cfe400b5ag3.cdn.mdstrm.com/live-stream-mp/dtmqa0td0lg1v/b9ba794c3d21470db3b37eea44518986/69934178aea15ae34fa39ad0/index_2.m3u8
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" group-title="AUTON (BASKET)" tvg-logo="https://www.vectorlogo.es/wp-content/uploads/2020/03/logo-vector-aragon-television.jpg", ARAGON TV (2)
+https://eu-a1-p-e-0b0e07cfe400b5ag3.cdn.mdstrm.com/live-stream-mp/dtmqa0td0lg1v/b9ba794c3d21470db3b37eea44518986/69934178aea15ae34fa39ad0/index_2.m3u8?es=eu-a1-p-e-0b0e07cfe400b5ag3.cdn.mdstrm.com&_Expires=&_Key_Pair_Id=&_Policy=&_Signature=&proto=https&=&CMCD=cid=%2269934178aea15ae34fa39ad0%22,mtp=134300,ot=m,sf=h,sid=%22rXpxW01xGyOHgnXgS8ADoKFHeDlx2uIQ%22
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" group-title="🇪🇦 ESPAÑA - LIGA" tvg-id="DAZN LaLiga HD" tvg-logo="https://estatico.emisiondof6.com/recorte/m-NEONEGR/canal/DAZNLI", DAZN LALIGA (AGILE)
+https://requestrouter3.cdn.agiletv.net/__cl/cg:lv-r4/__c/DAZN_LALIGA1/__op/8fe5c65f81d13f7af6496748b5fb148b/__f/index.m3u8
+#EXTINF:-1 tvg-id="DAZN LaLiga 2 HD" tvg-logo="https://estatico.emisiondof6.com/recorte/m-NEONEGR/canal/DAZNLI" group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" group-title="🇪🇦 ESPAÑA - LIGA", DAZN LALIGA 2 (AGILE)
+https://requestrouter3.cdn.agiletv.net/__cl/cg:lv-r4/__c/DAZN_LALIGA2/__op/8fe5c65f81d13f7af6496748b5fb148b/__f/index.m3u8
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" tvg-logo="https://m.media-amazon.com/images/I/61pAdLCxz7L.png" tvg-id="DE: Magenta Sport 1" group-title="🇩🇪 ALEMANIA - MAGENTA/MYTEAM", MY TEAM TV 1
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0
+https://ch.contv.io/myteam2.php?id=8118
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" tvg-logo="https://m.media-amazon.com/images/I/61pAdLCxz7L.png" tvg-id="DE: Magenta Sport 3" group-title="🇩🇪 ALEMANIA - MAGENTA/MYTEAM", MY TEAM TV 3
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0
+https://ch.contv.io/myteam2.php?id=8153
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" tvg-id="DE: Magenta Sport 5" tvg-logo="https://m.media-amazon.com/images/I/61pAdLCxz7L.png" group-title="🇩🇪 ALEMANIA - MAGENTA/MYTEAM", MY TEAM TV 5
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0
+https://ch.contv.io/myteam2.php?id=8159
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" tvg-logo="https://m.media-amazon.com/images/I/61pAdLCxz7L.png" tvg-id="DE: Magenta Sport 6" group-title="🇩🇪 ALEMANIA - MAGENTA/MYTEAM", MY TEAM TV 6
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0
+https://ch.contv.io/myteam2.php?id=8120
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" tvg-id="DE: Magenta Sport 8" tvg-logo="https://m.media-amazon.com/images/I/61pAdLCxz7L.png" group-title="🇩🇪 ALEMANIA - MAGENTA/MYTEAM", MY TEAM TV 8
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0
+https://ch.contv.io/myteam2.php?id=8134
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" tvg-id="DE: Magenta Sport 11" tvg-logo="https://m.media-amazon.com/images/I/61pAdLCxz7L.png" group-title="🇩🇪 ALEMANIA - MAGENTA/MYTEAM", MY TEAM TV 11
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0
+https://ch.contv.io/myteam2.php?id=8190
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" tvg-id="DE: Magenta Sport 12" tvg-logo="https://m.media-amazon.com/images/I/61pAdLCxz7L.png" group-title="🇩🇪 ALEMANIA - MAGENTA/MYTEAM", MY TEAM TV 12
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0
+https://ch.contv.io/myteam2.php?id=8184
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" tvg-id="DE: Magenta Sport 18" tvg-logo="https://m.media-amazon.com/images/I/61pAdLCxz7L.png" group-title="🇩🇪 ALEMANIA - MAGENTA/MYTEAM", MY TEAM TV 18
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0
+https://ch.contv.io/myteam2.php?id=8270
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" group-title="🇵🇹 PORTUGAL - SPORT TV" tvg-id="PT | Sport TV +" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Sport%20TV%20%2B.png",SPORT TV+ HD (Audio 2 ES)
+http://rr.cdn.vodafone.pt/LIVE/sdash/LIVE$408/index.mpd/Manifest?start=LIVE&end=END&device=DASH_AVC_HD
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" group-title="🇮🇱 ISRAEL SPORT 5 + ONE" tvg-id="SPORT 5 4K.il" tvg-logo="https://epg.pw/media/images/epg/2024/06/08/20240608032319157910_40.png", 5 SPORT 4K
+https://d1zqtf09wb8nt5.cloudfront.net/livedash/oil/freetv/live/sport_5_4k/live.livx
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" group-title="🇮🇱 ISRAEL SPORT 5 + ONE" tvg-id="SPORT5.il" tvg-logo="https://media.licdn.com/dms/image/v2/C4D0BAQGErgDrxe0oLQ/company-logo_200_200/company-logo_200_200/0/1633345323340/sport5_co_il_logo?e=2147483647&v=beta&t=yt5MieslWpk7OJOneUkpSAMzWBaRHaPibyNuenDRjCU",5 SPORTS
+https://d1zqtf09wb8nt5.cloudfront.net/livedash/oil/freetv/live/sport_5/live.livx
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" tvg-id="SPORT 5 GOLD.il" tvg-logo="https://epg.pw/media/images/epg/2024/06/08/20240608030438405081_14.png" group-title="🇮🇱 ISRAEL SPORT 5 + ONE",5 SPORTS GOLD
+https://d1zqtf09wb8nt5.cloudfront.net/livedash/oil/freetv/live/sport_5_gold/live.livx?indexMode&amp;dvr=7200000
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" tvg-id="Sport 5 Live.il" tvg-logo="https://epg.pw/media/images/epg/2025/11/20/20251120021022948247_96.png" group-title="🇮🇱 ISRAEL SPORT 5 + ONE",5 SPORTS LIVE
+https://d1zqtf09wb8nt5.cloudfront.net/livedash/oil/freetv/live/sport_5_live/live.livx?indexMode&amp;dvr=7200000
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" group-title="🇮🇱 ISRAEL SPORT 5 + ONE" tvg-id="SPORT 5 PLUS.il" tvg-logo="https://epg.pw/media/images/epg/2024/06/08/20240608034429338823_37.png",5 SPORTS PLUS
+https://d1zqtf09wb8nt5.cloudfront.net/livedash/oil/freetv/live/sport_5_plus/live.livx?indexMode&amp;dvr=7200000
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" group-title="🇮🇱 ISRAEL SPORT 5 + ONE" tvg-id="Sport 5 Stars.il" tvg-logo="https://epg.pw/media/images/epg/2024/06/08/20240608035755702844_71.png",5 SPORTS STARS
+https://d1zqtf09wb8nt5.cloudfront.net/livedash/oil/freetv/live/sport_5_starz/live.livx?indexMode&amp;dvr=7200000
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" group-title="🇮🇱 ISRAEL SPORT 5 + ONE" tvg-id="https://media.licdn.com/dms/image/v2/C4D0BAQGErgDrxe0oLQ/company-logo_200_200/company-logo_200_200/0/1633345323340/sport5_co_il_logo?e=2147483647&v=beta&t=yt5MieslWpk7OJOneUkpSAMzWBaRHaPibyNuenDRjCU" tvg-logo="",5 SPORTS MAX
+https://d1zqtf09wb8nt5.cloudfront.net/livedash/oil/freetv/live/sport_5_max/live.livx
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" group-title="🇮🇱 ISRAEL SPORT 5 + ONE" tvg-logo="https://cms.freetv.tv/uploads/one_1_aa2bf2fd61.webp" tvg-id="ONE 1.il", ONE 1
+https://d1zqtf09wb8nt5.cloudfront.net/livedash/oil/freetv/live/one_1/live.livx?indexMode&amp;dvr=7200000
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" group-title="🇮🇱 ISRAEL SPORT 5 + ONE" tvg-logo="https://cms.freetv.tv/uploads/one2_6b0eb363e6.webp" tvg-id="ONE 2.il", ONE 2
+https://d1zqtf09wb8nt5.cloudfront.net/livedash/oil/freetv/live/one_2/live.livx?indexMode&amp;dvr=7200000
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" group-title="🇮🇱 ISRAEL SPORT 5 + ONE" tvg-logo="https://cms.freetv.tv/uploads/one_doco_aa5e12fe5e.webp" tvg-id="One Doco.il", ONE DOCO
+https://d1zqtf09wb8nt5.cloudfront.net/livedash/oil/freetv/live/one_doco/live.livx?indexMode&amp;dvr=7200000
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" group-title="🇮🇱 ISRAEL SPORT 5 + ONE" tvg-logo="https://cms.freetv.tv/uploads/edge_06973a878a.webp" tvg-id="One Edge.il", ONE EDGE
+https://d1zqtf09wb8nt5.cloudfront.net/livedash/oil/freetv/live/one_edge/live.livx?indexMode&amp;dvr=7200000
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" tvg-id="beIN SPORTS 1.fr" tvg-logo="https://static.wikia.nocookie.net/logo-chaines/images/4/49/BeinSport1.jpg/revision/latest?cb=20190816124700&path-prefix=fr"  group-title="🇨🇵 FR - BEIN / M6 / EUR" , BEIN 1 (IPTV)
+http://99.27.51.147:8080/BeinSport/index.m3u8
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" tvg-id="beIN SPORTS 2.fr" tvg-logo="https://static.wikia.nocookie.net/logo-chaines/images/2/2f/Beinsport2.jpg/revision/latest?cb=20190816132756&path-prefix=fr"  group-title="🇨🇵 FR - BEIN / M6 / EUR" , BEIN 2 (IPTV)
+http://99.27.51.147:8080/BeinSport2/index.m3u8
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" tvg-id="beIN SPORTS 3.fr" tvg-logo="https://static.wikia.nocookie.net/logo-chaines/images/3/3f/LOGO-BEINSPORTS-3-1024x576.jpg/revision/latest?cb=20190817091656&path-prefix=fr"  group-title="🇨🇵 FR - BEIN / M6 / EUR" , BEIN 3 (IPTV)
+http://99.27.51.147:8080/BeinSport3/index.m3u8
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" tvg-logo="https://thumb.wikimedia.org/wikipedia/commons/thumb/6/60/ESPN_logos.png/330px-ESPN_logos.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail" tvg-id="ESPN.br" group-title="🇧🇷 BRASIL - DEPORTES", ESPN 1 BR
+http://45.140.192.92:3000/stream/espn
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" tvg-logo="https://thumb.wikimedia.org/wikipedia/commons/thumb/6/60/ESPN_logos.png/330px-ESPN_logos.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail" tvg-id="ESPN2.br" group-title="🇧🇷 BRASIL - DEPORTES", ESPN 2 BR
+http://45.140.192.92:3000/stream/espn-2
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" tvg-logo="https://thumb.wikimedia.org/wikipedia/commons/thumb/6/60/ESPN_logos.png/330px-ESPN_logos.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail" tvg-id="ESPN3.br" group-title="🇧🇷 BRASIL - DEPORTES", ESPN 3 BR
+http://45.140.192.92:3000/stream/espn-3
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" tvg-logo="https://thumb.wikimedia.org/wikipedia/commons/thumb/6/60/ESPN_logos.png/330px-ESPN_logos.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail" tvg-id="ESPN4.br" group-title="🇧🇷 BRASIL - DEPORTES", ESPN 4 BR
+http://45.140.192.92:3000/stream/espn-4
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" tvg-logo="https://thumb.wikimedia.org/wikipedia/commons/thumb/6/60/ESPN_logos.png/330px-ESPN_logos.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail" tvg-id="ESPN5.br" group-title="🇧🇷 BRASIL - DEPORTES", ESPN 5 BR
+http://45.140.192.92:3000/stream/espn-5
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" tvg-logo="https://thumb.wikimedia.org/wikipedia/commons/thumb/6/60/ESPN_logos.png/330px-ESPN_logos.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail" tvg-id="ESPN6.br" group-title="🇧🇷 BRASIL - DEPORTES", ESPN 6 BR
+http://45.140.192.92:3000/stream/espn-6
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" group-title="🇧🇷 BRASIL - DEPORTES" tvg-logo="https://rd1.com.br/wp-content/uploads/2021/06/20210612-premiere-prime.jpg" tvg-id="PremiereClubes.br" ,PREMIERE AQ (op2)
+http://45.140.192.92:3000/stream/premiere?decryption_key=56b79c1782b30e6b6fc973b0e8fd4104:fa38aaa865a57eda7c77444697ba8ed3
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" group-title="🇧🇷 BRASIL - DEPORTES" tvg-logo="https://rd1.com.br/wp-content/uploads/2021/06/20210612-premiere-prime.jpg" tvg-id="Premiere2.br" ,PREMIERE 2 (op2)
+http://45.140.192.92:3000/stream/premiere-2?decryption_key=9dc40460c93087aea84d6315f08ecb64:f69c8d4624fddff4ca89bd0b31bdc4a7
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" group-title="🇧🇷 BRASIL - DEPORTES" tvg-logo="https://rd1.com.br/wp-content/uploads/2021/06/20210612-premiere-prime.jpg" tvg-id="Premiere3.br" ,PREMIERE 3 (AMZ)
+http://45.140.192.92:3000/stream/premiere-3?decryption_key=d23f7433798a652a7d4f6791d9e1036c:4942eebd598b5727c5cc484cc62b52e8
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" group-title="🇧🇷 BRASIL - DEPORTES" tvg-logo="https://rd1.com.br/wp-content/uploads/2021/06/20210612-premiere-prime.jpg" tvg-id="Premiere4.br" ,PREMIERE 4 (op2)
+http://45.140.192.92:3000/stream/premiere-4?decryption_key=e23365c2ad97870c871712b73f0d6195:58709c714320bb862dbd07270df81c94
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" group-title="🇧🇷 BRASIL - DEPORTES" tvg-logo="https://rd1.com.br/wp-content/uploads/2021/06/20210612-premiere-prime.jpg" tvg-id="Premiere5.br" ,PREMIERE 5 (op2)
+http://45.140.192.92:3000/stream/premiere-5?decryption_key=332f62eb3cae824e98a4124da29a7d31:d1698cda3d040f9051125a61745b596b
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" group-title="🇧🇷 BRASIL - DEPORTES" tvg-logo="https://rd1.com.br/wp-content/uploads/2021/06/20210612-premiere-prime.jpg" tvg-id="Premiere 6.br" ,PREMIERE 6 (op2)
+http://45.140.192.92:3000/stream/premiere-6?decryption_key=8bf16a4ba05bcc97e6259297e50be63d:8dd97d486cbdd15cc47ea8c41b264ebb
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" group-title="🇧🇷 BRASIL - DEPORTES" tvg-logo="https://rd1.com.br/wp-content/uploads/2021/06/20210612-premiere-prime.jpg" tvg-id="Premiere 7.br" ,PREMIERE 7 (op2)
+http://45.140.192.92:3000/stream/premiere-7?decryption_key=238f5cf32228c1877f8b939f5f9d7bd8:47571c93e4335b3d1590a5ae3f5c48ef
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" group-title="🇧🇷 BRASIL - DEPORTES" tvg-logo="https://static.wikia.nocookie.net/redeglobo/images/9/94/SporTV_Logo.jpg/revision/latest?cb=20230705122353&path-prefix=pt" tvg-id="SporTV.br" ,SPORTV (OP2)
+http://45.140.192.92:3000/stream/sportv?decryption_key=cb5eaea6d91fc8a702f154cefd69c976:fd4b69623da596aac100e5722d8a1ca0
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" group-title="🇧🇷 BRASIL - DEPORTES" tvg-logo="https://static.wikia.nocookie.net/redeglobo/images/9/94/SporTV_Logo.jpg/revision/latest?cb=20230705122353&path-prefix=pt" tvg-id="SporTV.br" ,SPORTV 2 (OP2)
+http://45.140.192.92:3000/stream/sportv-2?decryption_key=5a943cad6ab15cb38be03142ec55b493:f61dfd5420cf134be3207f534dec243b
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" group-title="🇧🇷 BRASIL - DEPORTES" tvg-logo="https://static.wikia.nocookie.net/redeglobo/images/9/94/SporTV_Logo.jpg/revision/latest?cb=20230705122353&path-prefix=pt" tvg-id="SporTV3.br" ,SPORTV 3 (OP3)
+http://45.140.192.92:3000/stream/sportv-3?decryption_key=5a943cad6ab15cb38be03142ec55b493:2df9a948939ee87d950c60e1141b78da
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" group-title="🇺🇸 TENNIS CHANNEL" tvg-id="TennisChannel.us" tvg-logo="https://telegra.ph/file/8807aa3ba9ca7f2232492.jpg" ,Tennis Channel 1
+https://amg01444-tennischannelth-tennischannelspain-orangees-gpx6v.amagi.tv/playlist/amg01444-tennischannelth-tennischannelspain-orangees/playlist.m3u8
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" group-title="🇺🇸 TENNIS CHANNEL" tvg-id="TennisChannel2.us" tvg-logo="https://telegra.ph/file/8807aa3ba9ca7f2232492.jpg" ,Tennis Channel 2
+https://amg01444-amg01444c2-localnow-us-3472.playouts.now.amagi.tv/playlist/amg01444-tennischannelfast-tennischannelus-localnowus/playlist.m3u8?channel_brand_id=AMDB013498&gdpr_consent=&dnt=&content_id=7382296F-97F6-4450-B77B-8FE331FC04F6&app_store_url=&url=&us_privacy=1YNY&channel_corp=The%20Tennis%20Channel%20LLC&app_bundle=&genre=Sports&app_name=&content_title=&channel_company_id=AMDP500547&gdpr=&coppa=0&did=&iu=%5BREPLACEME%5D&ic=%5BREPLACE_ME%5D&app_version=0.0.0&device_devicetype=desktop_web&height=1080&ip_addr=193.228.206.147&page_url=https%25253A%25252F%25252Flocalnow.com%25252Fchannels%25252Fcbs-news-chicago-hyperlocal&ua=Mozilla%2F5.0%20%28Windows%20NT%2010.0%3B%20Win64%3B%20x64%29%20AppleWebKit%2F537.36%20%28KHTML%2C%20like%20Gecko%29%20Chrome%2F122.0.0.0%20Safari%2F537.36&width=1920
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" tvg-logo="https://r2.thesportsdb.com/images/media/channel/logo/2v005r1643205531.png" tvg-id="Arena Sport 1.rs" group-title="🇷🇸 SERBIA - ARENA SPORT (IPTV)", ARENA SPORT 1 Srb
+#EXTVLCOPT:http-user-agent=Chrome/61.0.3163.100
+http://78.108.251.7/Arena_Sport_1/index.m3u8
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" tvg-logo="https://r2.thesportsdb.com/images/media/channel/logo/m4cqz91643205540.png" tvg-id="Arena Sport 2.rs" group-title="🇷🇸 SERBIA - ARENA SPORT (IPTV)", ARENA SPORT 2 Srb
+#EXTVLCOPT:http-user-agent=Chrome/61.0.3163.100
+http://78.108.251.7/Arena_Sport_2/index.m3u8
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" tvg-logo="https://r2.thesportsdb.com/images/media/channel/logo/yjqg7l1643205550.png" tvg-id="Arena Sport 3.rs" group-title="🇷🇸 SERBIA - ARENA SPORT (IPTV)", ARENA SPORT 3 Srb
+#EXTVLCOPT:http-user-agent=Chrome/61.0.3163.100
+http://78.108.251.7/Arena_Sport_3/index.m3u8
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" tvg-logo="https://r2.thesportsdb.com/images/media/channel/logo/cvlppn1643205563.png" tvg-id="Arena Sport 4.rs" group-title="🇷🇸 SERBIA - ARENA SPORT (IPTV)", ARENA SPORT 4 Srb
+#EXTVLCOPT:http-user-agent=Chrome/61.0.3163.100
+http://78.108.251.7/Arena_Sport_4/index.m3u8
+#EXTINF:-1 group-logo="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f4fa.png" tvg-logo="https://r2.thesportsdb.com/images/media/channel/logo/zu2qkb1643205581.png" tvg-id="Arena Sport 5.rs" group-title="🇷🇸 SERBIA - ARENA SPORT (IPTV)", ARENA SPORT 5 Srb
+#EXTVLCOPT:http-user-agent=Chrome/61.0.3163.100
+http://78.108.251.7/Arena_Sport_5/index.m3u8
